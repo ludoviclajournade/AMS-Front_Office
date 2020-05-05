@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Page accueil</title>
+</head>
+<body>
+    <h1>Page d'accueil</h1>
+    <p th:text="'Email: ' + ${myUser.email}" />
+    <p th:text="'Mot de passe : ' + ${myUser.password}" />
+    <p th:text="'Statut : ' + ${myUser.statut}" />
+
+    <a href="/">Page d'accueil</a>
+</body>
+</html>
