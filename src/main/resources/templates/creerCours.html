@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un cours</title>
+</head>
+<body>
+    <h1>Créer un cours</h1>
+    <form th:action="@{/creerCours}" method="post">
+        <div><label> Nom : <input type="text" name="nom"/> </label></div>
+        <div><label> Niveau cible : <input type="number" name="niveauCible"/> </label></div>
+        <div><input type="submit" value="Créer"/></div>
+    </form>
+    <div><a href="/">Retourner à l'accueil</a></div>
+</body>
+</html>

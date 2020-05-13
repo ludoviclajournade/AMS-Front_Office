@@ -16,7 +16,7 @@ public class MyUserController {
         return "login";
     }
 
-        @PostMapping("/login")
+    @PostMapping("/login")
     public String authSend(@ModelAttribute MyUser myUser)
     {
         return "home";

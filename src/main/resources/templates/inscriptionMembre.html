@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire membre</title>
+</head>
+<body>
+<h1>Créer un membre</h1>
+<form th:action="@{/inscriptionMembre}" method="post">
+    <div><label> Nom : <input type="text" name="nom"/> </label></div>
+    <div><label> Prénom : <input type="text" name="prenom"/> </label></div>
+    <div><label> Adresse : <input type="text" name="adresse"/> </label></div>
+    <div><label> Email : <input type="text" name="mail"/> </label></div>
+    <div><label> Mot de passe : <input type="text" name="mdp"/> </label></div>
+    <!-- div><label> Niveau : <input type="number" name="adresse"/> </label></div>
+    <div><label> Numéro de licence : <input type="text" name="numLicence"/> </label></div>
+    <div><label> Statut : <input type="text" name="statut"/> </label></div -->
+    <div><input type="submit" value="Créer"/></div>
+</form>
+</body>
+</html>

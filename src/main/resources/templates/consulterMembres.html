@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulter membres</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="membre : ${membres}">
+        <td th:text="${membre.nom}">&nbsp;</td>
+        <td th:text="${membre.prenom}">&nbsp;</td>
+    </tr>
+    </tbody>
+</table>
+<div><a href="/">Retourner à l'accueil</a></div>
+</body>
+</html>

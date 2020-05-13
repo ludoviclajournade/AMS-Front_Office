@@ -13,12 +13,12 @@ public class WelcomeController {
     public String getWelcome(Model model)
     {
         model.addAttribute("welcome",new Welcome());
-        return "welcome";
+        return "welcome.html";
     }
 
     @PostMapping("/")
     public String postWelcome(@ModelAttribute Welcome welcome)
     {
-        return "welcome";
+        return "welcome.html";
     }
 }
