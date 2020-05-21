@@ -5,6 +5,12 @@
     <title>Consulter membres</title>
 </head>
 <body>
+<h1>Choisir un membre comme enseignant</h1>
+<form th:action="@{/consulterMembres}" method="post">
+    <div><label> Id : <input type="number" name="id"/> </label></div>
+    <div><input type="submit" value="Désigner comme enseigant"/></div>
+</form>
+<h1>Consultation des membres</h1>
 <table>
     <thead>
     <tr>

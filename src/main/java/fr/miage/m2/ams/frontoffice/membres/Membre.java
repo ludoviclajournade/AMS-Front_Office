@@ -23,9 +23,15 @@ public class Membre {
 
     public Membre()
     {
+        this.id=null;
         this.statut="En retard de paiement";
+        this.niveau=0;
+        this.numLicence=null;
     }
-
+    public Membre(String nom, String prenom, String adresse, String mail, String mdp, String dateCertif)
+    {
+        this(null,nom,prenom,adresse,mail,mdp,0,null,dateCertif,"En retard de paiement");
+    }
 
     public Membre(Long id, String nom, String prenom, String adresse, String mail, String mdp, int niveau, String numLicence, String dateCertif, String statut) {
         this.id = id;

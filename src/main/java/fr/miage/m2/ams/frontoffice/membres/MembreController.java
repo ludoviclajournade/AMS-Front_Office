@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,15 @@ public class MembreController {
         log.info(membres.toString());
 
         model.addAttribute("membres",membres);
-        return "consulterMembres.html";
+        return "consulterMembres";
+    }
+
+    @PostMapping("/consulterMembres")
+    public String postConsulterMembres(@RequestParam Integer id)
+    {
+        log.info("id:"+id);
+        // restService.postJsonMembre("http://localhost:10000/",membre);
+        return "consulterMembres";
     }
 
 }
