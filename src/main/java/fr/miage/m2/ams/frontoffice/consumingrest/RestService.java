@@ -1,5 +1,6 @@
 package fr.miage.m2.ams.frontoffice.consumingrest;
 
+import fr.miage.m2.ams.frontoffice.cours.Cours;
 import fr.miage.m2.ams.frontoffice.membres.Membre;
 import fr.miage.m2.ams.frontoffice.membres.MembreController;
 import org.slf4j.Logger;
@@ -10,10 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import java.util.*;
 
 @Service
 public class RestService {
@@ -254,5 +253,66 @@ public class RestService {
 
     public String getJson(String url) {
         return this.restTemplate.getForObject(url, String.class);
+    }
+
+    /**
+     * Partie personnalisée
+     */
+    public void postJsonCours(String url, Cours cours) {
+        // create headers
+        HttpHeaders headers = new HttpHeaders();
+        // set `content-type` header
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        // set `accept` header
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        // create a map for post parameters
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("nom", cours.getNom());
+        map.put("niveauCible", cours.getNiveauCible());
+        map.put("idEnseignant", cours.getIdEnseignant());
+        map.put("creneau", cours.getCreneau());
+        map.put("duree", cours.getDuree());
+
+        // build the request
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+
+        // send POST request
+        ResponseEntity<Cours> response = this.restTemplate.postForEntity(url, entity, Cours.class);
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            log.info("Cours créé");
+        } else {
+            log.info("Cours non créé");
+            log.info(response.toString());
+        }
+    }
+
+    public void postJsonMembre(String url) {
+        // create headers
+        HttpHeaders headers = new HttpHeaders();
+        // set `content-type` header
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        // set `accept` header
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        // create a map for post parameters
+        Map<String, Object> map = new HashMap<>();
+
+
+        // build the request
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+
+        // send POST request
+        ResponseEntity<Membre> response = this.restTemplate.postForEntity(url, entity, Membre.class);
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            log.info("Post OK");
+        } else {
+            log.info("Post KO");
+        }
     }
 }

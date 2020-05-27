@@ -5,23 +5,72 @@
     <title>Consulter membres</title>
 </head>
 <body>
-<h1>Choisir un membre comme enseignant</h1>
+
+<label><b>Choisir un membre comme enseignant</b></label>
 <form th:action="@{/consulterMembres}" method="post">
-    <div><label> Id : <input type="number" name="id"/> </label></div>
-    <div><input type="submit" value="Désigner comme enseigant"/></div>
+        <label> Id : <input type="number" name="id"/> </label>
+        <SELECT name="isEnseignant" size="1">
+            <OPTION selected>1
+            <OPTION>0
+        </SELECT>
+    <input type="submit" value="Désigner comme enseigant"/>
 </form>
+
+<label><b>Changer le status d'un membre</b></label>
+<form th:action="@{/changerStatutPayement}" method="post">
+    <label> Id : <input type="number" name="idMembrePaiement"/> </label>
+    <SELECT name="statutMembre" size="1">
+        <OPTION selected>En règlege
+        <OPTION>en retard de paiement
+    </SELECT>
+    <input type="submit" value="Modifier le status"/>
+</form>
+
+<label><b>Renseigner le numéro de licence nationnal</b></label>
+<form th:action="@{/numLicenceNationnal}" method="post">
+    <label> Id : <input type="number" name="idMembreLicence"/> </label>
+    <label> Numéro de licence : <input type="text" name="numLicence"/> </label>
+    <input type="submit" value="Envoyer la licence"/>
+</form>
+
+<label><b>Valider le certificat médical</b></label>
+<form th:action="@{/validerCertificatMedical}" method="post">
+    <label> Id : <input type="number" name="idMembreCertifMedic"/> </label>
+    <label> Date : <input type="text" name="dateCertifMedic"/> </label>
+    <input type="submit" value="Envoyer la date de certification"/>
+</form>
+
+<label><b>Niveau d'un membre</b></label>
+<form th:action="@{/modifierNiveau}" method="post">
+    <label> Id : <input type="number" name="idMembreNiveau"/> </label>
+    <label> Niveau : <input type="number" name="niveau"/> </label>
+    <input type="submit" value="Modifier le niveau"/>
+</form>
+
 <h1>Consultation des membres</h1>
 <table>
     <thead>
     <tr>
+        <th>Id</th>
         <th>Nom</th>
         <th>Prénom</th>
+        <th>Enseigant</th>
+        <th>Payement</th>
+        <th>Certif.Medic.</th>
+        <th>Numéro de licence</th>
+        <th>Niveau</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="membre : ${membres}">
+        <td th:text="${membre.id}">&nbsp;</td>
         <td th:text="${membre.nom}">&nbsp;</td>
         <td th:text="${membre.prenom}">&nbsp;</td>
+        <td th:text="${membre.enseignant}">&nbsp;</td>
+        <td th:text="${membre.statut} + ' (' + ${membre.payement} + ')' ">&nbsp;</td>
+        <td th:text="${membre.dateCertif}">&nbsp;</td>
+        <td th:text="${membre.numLicence}">&nbsp;</td>
+        <td th:text="${membre.niveau}">&nbsp;</td>
     </tr>
     </tbody>
 </table>

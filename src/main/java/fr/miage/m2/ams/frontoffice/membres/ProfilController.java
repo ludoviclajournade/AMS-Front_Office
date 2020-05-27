@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class ProfilController {
     private static final Logger log = LoggerFactory.getLogger(MembreController.class);
@@ -28,22 +31,33 @@ public class ProfilController {
     @GetMapping("/gestionProfil")
     public String getGestionProfil(Model model)
     {
-        Membre membre = new Membre(new Long(1),"Lajournade","Ludovic","Université","ludovic.lajournade@toulouse.miage.fr","mdp",3,"numLicence","01/01/2020","En retard de paiement");
+        String json = restService.getJson("http://localhost:10000/1");
+        log.info(json);
+
+        Membre membre = gson.fromJson(json, Membre.class);
+
+        log.info(membre.toString());
 
         model.addAttribute("membre",membre);
         return "gestionProfil";
     }
 
     @PostMapping("/gestionProfil")
-    public String postGestionProfil(@RequestParam String IBAN,@RequestParam int montant, @ModelAttribute Membre membre)
+    public String postGestionProfil(@RequestParam String IBAN, Model model)
     {
-        membre.setPrenom("Ludovic");
-        membre.setNom("Lajournade");
-        membre.setStatut("en règle");
+        String json = restService.getJson("http://localhost:10000/1");
+        log.info(json);
+        Membre membre = gson.fromJson(json, Membre.class);
 
-        log.info("IBAN:"+IBAN+", montant:"+montant);
-        restService.postJsonMembre("http://localhost:10000/payement/18-04-2020/"+IBAN,membre); // TODO: tester le post
+        DateTimeFormatter formatter = DateTimeFormatter.BASIC_ISO_DATE;
+        String formattedDate = formatter.format(LocalDate.now());
 
+        log.info("IBAN:"+IBAN+", formattedDate:"+formattedDate);
+
+        restService.postJsonMembre("http://localhost:10000/payement/"+formattedDate+"/"+IBAN+"/"+membre.getId()); // TODO: tester le post
+
+        membre.setPayement(formattedDate);
+        model.addAttribute("membre",membre);
         return "gestionProfil";
     }
 }

@@ -1,6 +1,7 @@
 package fr.miage.m2.ams.frontoffice.cours;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import fr.miage.m2.ams.frontoffice.consumingrest.RestService;
 import fr.miage.m2.ams.frontoffice.membres.Membre;
 import fr.miage.m2.ams.frontoffice.membres.MembreController;
@@ -14,9 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class CoursController {
-    private static final Logger log = LoggerFactory.getLogger(MembreController.class);
+    private static final Logger log = LoggerFactory.getLogger(CoursController.class);
     private Gson gson;
     private RestService restService;
+
+    public CoursController() {
+        GsonBuilder builder = new GsonBuilder();
+        this.gson = new GsonBuilder()
+                .setDateFormat("dd-MM-yyyy hh:mm").create();
+        this.restService = new RestService();
+    }
 
     @GetMapping("/creerCours")
     public String getCreateLesson(Model model)
@@ -38,14 +46,14 @@ public class CoursController {
     @GetMapping("/planificationCours")
     public String getPlanificationCours(Model model)
     {
-        String json = restService.getJson("http://localhost:10001/getAllCours");
+        String json = restService.getJson("http://localhost:10001/cours/getAllCours");
         log.info(json);
 
-         Cours[] cours = gson.fromJson(json, Cours[].class);
+        Cours[] cours = gson.fromJson(json, Cours[].class);
 
         log.info(cours.toString());
 
-        model.addAttribute("cours",cours);
+        model.addAttribute("listeCours",cours);
 
         return "planificationCours";
     }

@@ -6,6 +6,20 @@
 </head>
 <body>
 <h1>Liste des piscines</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Lieu</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cours : ${listeCours}">
+        <td th:text="${cours.nom}">&nbsp;</td>
+        <td th:text="${cours.lieu}">&nbsp;</td>
+    </tr>
+    </tbody>
+</table>
 <div><a href="/">Retourner à l'accueil</a></div>
 </body>
 </html>

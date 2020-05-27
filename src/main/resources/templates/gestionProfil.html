@@ -9,12 +9,17 @@
 <p th:text="'Nom : ' + ${membre.nom}" />
 <p th:text="'Prenom : ' + ${membre.prenom}" />
 <p th:text="'Staut : ' + ${membre.statut}" />
-<h1>Vous avez un paiement en retard</h1>
-<form th:action="@{/gestionProfil}" method="post">
-    <div><label> IBAN : <input type="text" name="IBAN"/> </label></div>
-    <div><label> Montant : <input value=10 type="number" name="montant"/> </label></div>
-    <div><input type="submit" value="Payer"/></div>
-</form>
+<p th:text="'Payement : ' + ${membre.payement}" />
+
+<c:if test="${ 1 > 1000 }">
+    <h1>Vous avez un paiement en retard</h1>
+    <form th:action="@{/gestionProfil}" method="post">
+        <div><label> IBAN : <input type="text" name="IBAN"/> </label></div>
+        <div><label> Montant: 30 euros</label></div>
+        <div><input type="submit" value="Payer"/></div>
+    </form>
+</c:if>
+
 <div><a href="/">Retourner à l'accueil</a></div>
 </body>
 </html>

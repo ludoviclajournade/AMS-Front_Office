@@ -9,31 +9,30 @@ public class Membre {
 
     private String adresse;
 
-    private String mail;
+    public String mail;
 
-    private String mdp;
+    public String mdp;
 
-    private int niveau;
+    public int niveau;
 
-    private String numLicence;
+    public String numLicence;
 
-    private String dateCertif;
+    public String dateCertif;
 
-    private String statut;
+    public String payement;
 
-    public Membre()
-    {
-        this.id=null;
-        this.statut="En retard de paiement";
-        this.niveau=0;
-        this.numLicence=null;
-    }
-    public Membre(String nom, String prenom, String adresse, String mail, String mdp, String dateCertif)
-    {
-        this(null,nom,prenom,adresse,mail,mdp,0,null,dateCertif,"En retard de paiement");
+    public String statut;
+
+    public Boolean enseignant;
+
+    public long iban ;
+
+    public Membre(){
+
     }
 
-    public Membre(Long id, String nom, String prenom, String adresse, String mail, String mdp, int niveau, String numLicence, String dateCertif, String statut) {
+
+    public Membre(Long id, String nom, String prenom, String adresse, String mail, String mdp, int niveau, String numLicence, String dateCertif, String payement, String statut, long iban, Boolean enseignant) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -43,9 +42,27 @@ public class Membre {
         this.niveau = niveau;
         this.numLicence = numLicence;
         this.dateCertif = dateCertif;
+        this.payement = payement;
         this.statut = statut;
+        this.iban = iban;
+        this.enseignant = enseignant;
     }
 
+    public String getPayement() {
+        return payement;
+    }
+
+    public void setPayement(String payement) {
+        this.payement = payement;
+    }
+
+    public long getIban() {
+        return iban;
+    }
+
+    public Boolean getEnseignant() {
+        return enseignant;
+    }
 
     public Long getId() {
         return id;
@@ -81,6 +98,11 @@ public class Membre {
 
     public String getDateCertif() {
         return dateCertif;
+    }
+
+
+    public void setEnseignant(Boolean enseignant) {
+        this.enseignant = enseignant;
     }
 
     public String getStatut() {
@@ -127,4 +149,7 @@ public class Membre {
         this.statut = statut;
     }
 
+    public void setIban(long iban) {
+        this.iban = iban;
+    }
 }
