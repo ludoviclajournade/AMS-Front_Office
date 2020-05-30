@@ -16,9 +16,10 @@ public class MyUserController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String authSend(@ModelAttribute MyUser myUser)
+    @GetMapping("/logout")
+    public String getLogout(Model model)
     {
-        return "home";
+        return "login?logout";
     }
+
 }

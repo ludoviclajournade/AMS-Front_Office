@@ -12,6 +12,8 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.constraints.NotNull;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -259,6 +261,9 @@ public class RestService {
      * Partie personnalisée
      */
     public void postJsonCours(String url, Cours cours) {
+        // Init date converter
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         // create headers
         HttpHeaders headers = new HttpHeaders();
         // set `content-type` header
@@ -271,9 +276,8 @@ public class RestService {
 
         map.put("nom", cours.getNom());
         map.put("niveauCible", cours.getNiveauCible());
-        map.put("idEnseignant", cours.getIdEnseignant());
-        map.put("creneau", cours.getCreneau());
         map.put("duree", cours.getDuree());
+        map.put("jourPremierCours", dateFormat.format(cours.getJourPremierCours()));
 
         // build the request
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);

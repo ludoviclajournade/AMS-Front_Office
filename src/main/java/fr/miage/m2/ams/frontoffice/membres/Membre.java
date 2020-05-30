@@ -25,14 +25,14 @@ public class Membre {
 
     public Boolean enseignant;
 
-    public long iban ;
+    public String iban ;
 
     public Membre(){
 
     }
 
 
-    public Membre(Long id, String nom, String prenom, String adresse, String mail, String mdp, int niveau, String numLicence, String dateCertif, String payement, String statut, long iban, Boolean enseignant) {
+    public Membre(Long id, String nom, String prenom, String adresse, String mail, String mdp, int niveau, String numLicence, String dateCertif, String payement, String statut, String iban, Boolean enseignant) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -56,7 +56,7 @@ public class Membre {
         this.payement = payement;
     }
 
-    public long getIban() {
+    public String getIban() {
         return iban;
     }
 
@@ -149,7 +149,7 @@ public class Membre {
         this.statut = statut;
     }
 
-    public void setIban(long iban) {
+    public void setIban(String iban) {
         this.iban = iban;
     }
 }

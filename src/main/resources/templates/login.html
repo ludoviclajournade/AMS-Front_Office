@@ -9,12 +9,17 @@
     Invalid username and password.
 </div>
 <div th:if="${param.logout}">
-    You have been logged out.
+    <div>You have been logged out.</div>
+</div>
+<div th:if="${param.membreCreer}">
+    Membre créé avec success
 </div>
 <form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><label> User Name : </label><input type="text" name="username" required></div>
+    <div><label> Password: </label><input type="password" name="password" required></div>
     <div><input type="submit" value="Sign In"/></div>
 </form>
+<div><a href="/inscriptionMembre">S'inscrire (membre)</a></div>
+<div><a href="/">Retourner à l'accueil</a></div>
 </body>
 </html>

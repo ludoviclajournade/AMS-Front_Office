@@ -9,9 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class CoursController {
@@ -27,18 +29,26 @@ public class CoursController {
     }
 
     @GetMapping("/creerCours")
-    public String getCreateLesson(Model model)
+    public String getCreerLesson(Model model)
     {
-        model.addAttribute("cours",new Lesson("mon cours",3));
         return "creerCours";
     }
 
     @PostMapping("/creerCours")
-    public String postCreateLesson(@ModelAttribute Lesson lesson)
-    {
-        RestService restService = new RestService();
-        String res = restService.getPostsPlainJSON();
-        log.info(res);
+    public String postCreerCours(@RequestParam String nom, @RequestParam Integer niveauCible,
+                                 @RequestParam Integer duree, @RequestParam String jourPremierCours) throws ParseException {
+        log.info(gson.toJson("nom:"+nom+", niveauCible:"+niveauCible+", duree:"+duree+", jourPremierCours:"+jourPremierCours));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date jourPremierCoursDate = dateFormat.parse(jourPremierCours);
+
+        Cours cours = new Cours();
+            cours.setNom(nom);
+            cours.setNiveauCible(niveauCible);
+            cours.setDuree(duree);
+            cours.setJourPremierCours(jourPremierCoursDate);
+
+        restService.postJsonCours("http://localhost:10001/cours/create",cours);
 
         return "creerCours";
     }

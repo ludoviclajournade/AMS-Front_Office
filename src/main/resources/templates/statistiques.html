@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistiques</title>
+</head>
+<body>
+    <h1>Statistiques</h1>
+    <div><label th:text="'Nombre de membres : ' + ${nbMembres}">&nbsp;</label></div>
+    <div><label th:text="'Nombre d\'enseigants : ' + ${nbEnseignants}">&nbsp;</label></div>
+    <div><label th:text="'Nombre de cours positionnés : ' + ${nbCoursPositionned}+'/'+${nbCours}"></label></div>
+    <div><label th:text="'Nombre de cotisations réglés : '+${nbCotisationsOK}"></label></div>
+    <div><label th:text="'Nombre de cotisations en attente : '+${nbCotisationsWaiting}"></label></div>
+    <br>
+    <div><a href="/">Retourner à l'accueil</a></div>
+</body>
+</html>

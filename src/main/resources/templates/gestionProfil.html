@@ -6,19 +6,70 @@
 </head>
 <body>
 <h1>Gestion du profile</h1>
-<p th:text="'Nom : ' + ${membre.nom}" />
-<p th:text="'Prenom : ' + ${membre.prenom}" />
-<p th:text="'Staut : ' + ${membre.statut}" />
-<p th:text="'Payement : ' + ${membre.payement}" />
+<form th:action="@{/modifierMembre}" method="post">
+    <div>
+        <label>Id : </label>
+        <input type="number" name="id" th:value="${membre.id}" readonly="readonly" />
+    </div>
+    <div>
+        <label>Nom : </label>
+        <input type="text" name="nom" th:value="${membre.nom}" />
+    </div>
+    <div>
+        <label>Prenom : </label>
+        <input type="text" name="prenom" th:value="${membre.prenom}"/>
+    </div>
+    <div>
+        <label>Adresse : </label>
+        <input type="text" name="adresse" th:value="${membre.adresse}"/>
+    </div>
+    <div>
+        <label>Mail : </label>
+        <input type="text" name="mail" th:value="${membre.mail}" readonly="readonly" />
+    </div>
+    <div>
+        <label>Mot de passe : </label>
+        <input type="password" name="mdp" th:value="${membre.mdp}" />
+    </div>
+    <div>
+        <label>Niveau : </label>
+        <input type="number" name="niveau" th:value="${membre.niveau}" readonly="readonly" />
+    </div>
+    <div>
+        <label>Numéro de licence : </label>
+        <input type="text" name="numLicence" th:value="${membre.numLicence}" readonly="readonly" />
+    </div>
+    <div>
+        <label>Date de certification : </label>
+        <input type="text" name="dateCertif" th:value="${membre.dateCertif}" readonly="readonly" />
+    </div>
+    <div>
+        <label>Statut : </label>
+        <input type="text" name="statut" th:value="${membre.statut}" readonly="readonly" />
+    </div>
+    <div>
+        <label>Iban : </label>
+        <input type="text" name="iban" th:value="${membre.iban}" readonly="readonly" />
+    </div>
+    <div>
+        <label>Enseignant ? </label>
+        <input type="text" name="enseignant" th:value="${membre.enseignant}" readonly="readonly" />
+    </div>
+    <div>
+        <label>Payement : </label>
+        <input type="text" name="payement" th:value="${membre.payement}" readonly="readonly" />
+    </div>
+    <div><input type="submit" value="Modifier"/></div>
+</form>
 
-<c:if test="${ 1 > 1000 }">
+<div th:if="${payementEnvoye}">
     <h1>Vous avez un paiement en retard</h1>
     <form th:action="@{/gestionProfil}" method="post">
         <div><label> IBAN : <input type="text" name="IBAN"/> </label></div>
         <div><label> Montant: 30 euros</label></div>
-        <div><input type="submit" value="Payer"/></div>
+        <div><input type="submit" th:value="Payer"/></div>
     </form>
-</c:if>
+</div>
 
 <div><a href="/">Retourner à l'accueil</a></div>
 </body>

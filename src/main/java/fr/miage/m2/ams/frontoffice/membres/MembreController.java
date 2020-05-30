@@ -38,7 +38,9 @@ public class MembreController {
     {
         log.info(gson.toJson(membre));
         restService.postJsonMembre("http://localhost:10000/",membre);
-        return "inscriptionMembre";
+        restService.getJson("http://localhost:8080/user/add/"+membre.getMail()+"/"+membre.getMdp());
+
+        return "login?membreCreer";
     }
 
     @GetMapping("/consulterMembres")

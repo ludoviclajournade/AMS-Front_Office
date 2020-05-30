@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import fr.miage.m2.ams.frontoffice.consumingrest.RestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 
 @Controller
 public class ProfilController {
-    private static final Logger log = LoggerFactory.getLogger(MembreController.class);
+    private static final Logger log = LoggerFactory.getLogger(ProfilController.class);
     private Gson gson;
     private RestService restService;
 
@@ -31,14 +34,22 @@ public class ProfilController {
     @GetMapping("/gestionProfil")
     public String getGestionProfil(Model model)
     {
-        String json = restService.getJson("http://localhost:10000/1");
+        // get username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("username:"+username);
+
+        // get user information
+        String json = restService.getJson("http://localhost:10000/email/"+username);
         log.info(json);
 
         Membre membre = gson.fromJson(json, Membre.class);
-
         log.info(membre.toString());
 
+        // check payement
+        boolean payementEnvoye= (membre.getPayement() == null) ? true : false;
+
         model.addAttribute("membre",membre);
+        model.addAttribute("payementEnvoye",payementEnvoye);
         return "gestionProfil";
     }
 
@@ -58,6 +69,15 @@ public class ProfilController {
 
         membre.setPayement(formattedDate);
         model.addAttribute("membre",membre);
+        return "gestionProfil";
+    }
+
+    @PostMapping("/modifierMembre")
+    public String postModifierMembre(@ModelAttribute Membre membre)
+    {
+        log.info("postModifierMembre: " + gson.toJson(membre));
+        restService.postJsonMembre("http://localhost:10000/"+membre.getId(),membre);
+
         return "gestionProfil";
     }
 }

@@ -5,26 +5,34 @@
     <title>Bienvenue</title>
 </head>
 <body>
-<h1>Bienvenue</h1>
-<p th:text="'Message: ' + ${welcome.message}" />
-<div><a href="/inscriptionMembre">S'inscrire (membre)</a></div>
-<!-- Secrétaire -->
-<h2>Secrétariat</h2>
-<div><a href="/consulterMembres">Consulter les membres</a></div>
-<!-- Membre -->
-<h2>Memmbre</h2>
-<div><a href="/gestionProfil">Gérer son profil</a></div>
+    <h1>Bienvenue</h1>
+    <div th:if="${ROLE_ANONYMOUS}">
+         <h2>Membre</h2>
+         <div><a href="/inscriptionMembre">S'inscrire (membre)</a></div>
+    </div>
+    <div th:if="${ROLE_SECRETAIRE}">
+        <!-- Secrétaire -->
+        <h2>Secrétariat</h2>
+        <div><a href="/consulterMembres">Consulter les membres</a></div>
+    </div>
+    <div th:if="${ROLE_ENSEIGNANT}">
+    <!-- Enseignants -->
+    <h2>Enseignants</h2>
+    <div><a href="/creerCours">Créer un cours</a></div>
+    </div>
+    <div th:if="${ROLE_USER}">
+    <!-- Membre -->
+    <h2>Membre</h2>
+    <div><a href="/gestionProfil">Gérer son profil</a></div>
+    </div>
+    <div th:if="${ROLE_ADMIN}">
+    <!-- Président -->
+    <h2>Président</h2>
+    <div><a href="/statistiques">Statistiques</a></div>
+    </div>
 
-
-<a href="/login">Se connecter</a>
-<a href="/signin">S'inscrire</a>
-<!-- Membre -->
-<a href="/inscriptionCours">S'inscrire aux cours</a>
-<!-- Enseignant -->
-<a href="/planificationCours">Plannifier un cours</a>
-<!-- Secrétaire -->
-<a href="/gestionMembres">Gérer les membres</a>
-<!-- Président -->
-<a href="/statistiques">statistiques</a>
+    <br>
+    <a href="/login">Se connecter</a>
+    <a href="/login?logout">Se déconnecter</a>
 </body>
 </html>
