@@ -32,7 +32,7 @@ public class WelcomeController {
     {
         // Init roles boolean
         boolean ROLE_ANONYMOUS=false;
-        boolean ROLE_ADMIN=false;
+        boolean ROLE_DIRECTEUR=false;
         boolean ROLE_SECRETAIRE=false;
         boolean ROLE_USER=false;
         boolean ROLE_ENSEIGNANT=false;
@@ -50,8 +50,8 @@ public class WelcomeController {
                 case "ROLE_ANONYMOUS":
                     ROLE_ANONYMOUS=true;
                     break;
-                case "ROLE_ADMIN":
-                    ROLE_ADMIN=true;
+                case "ROLE_DIRECTEUR":
+                    ROLE_DIRECTEUR=true;
                     break;
                 case "ROLE_SECRETAIRE":
                     ROLE_SECRETAIRE=true;
@@ -67,7 +67,7 @@ public class WelcomeController {
 
         // Add roles into params
         model.addAttribute("ROLE_ANONYMOUS",ROLE_ANONYMOUS);
-        model.addAttribute("ROLE_ADMIN",ROLE_ADMIN);
+        model.addAttribute("ROLE_DIRECTEUR",ROLE_DIRECTEUR);
         model.addAttribute("ROLE_SECRETAIRE",ROLE_SECRETAIRE);
         model.addAttribute("ROLE_USER",ROLE_USER);
         model.addAttribute("ROLE_ENSEIGNANT",ROLE_ENSEIGNANT);

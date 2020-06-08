@@ -1,5 +1,9 @@
 package fr.miage.m2.ams.frontoffice.membres;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 public class Membre {
     private Long id;
 
@@ -17,13 +21,16 @@ public class Membre {
 
     public String numLicence;
 
-    public String dateCertif;
+    @JsonFormat
+            (shape =  JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    public Date dateCertif;
 
     public String payement;
 
     public String statut;
 
     public Boolean enseignant;
+
 
     public String iban ;
 
@@ -32,7 +39,7 @@ public class Membre {
     }
 
 
-    public Membre(Long id, String nom, String prenom, String adresse, String mail, String mdp, int niveau, String numLicence, String dateCertif, String payement, String statut, String iban, Boolean enseignant) {
+    public Membre(Long id, String nom, String prenom, String adresse, String mail, String mdp, int niveau, String numLicence, Date dateCertif, String payement, String statut, Boolean enseignant) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -44,7 +51,6 @@ public class Membre {
         this.dateCertif = dateCertif;
         this.payement = payement;
         this.statut = statut;
-        this.iban = iban;
         this.enseignant = enseignant;
     }
 
@@ -96,7 +102,7 @@ public class Membre {
         return numLicence;
     }
 
-    public String getDateCertif() {
+    public Date getDateCertif() {
         return dateCertif;
     }
 
@@ -141,7 +147,7 @@ public class Membre {
         this.numLicence = numLicence;
     }
 
-    public void setDateCertif(String dateCertif) {
+    public void setDateCertif(Date dateCertif) {
         this.dateCertif = dateCertif;
     }
 

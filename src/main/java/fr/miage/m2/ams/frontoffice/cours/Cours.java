@@ -1,10 +1,8 @@
 package fr.miage.m2.ams.frontoffice.cours;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class Cours {
@@ -24,11 +22,15 @@ public class Cours {
     //durée exprimée en minutes
     public int duree;
 
-    @JsonFormat
-            (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    public Date jourPremierCours;
-
     public int nbPlacesOccupees;
+
+    public int getCptIdSeance() {
+        return cptIdSeance;
+    }
+
+    public void setCptIdSeance(int cptIdSeance) {
+        this.cptIdSeance = cptIdSeance;
+    }
 
     //liste des séances de cours
     public HashMap<Integer, Seance> listeSeances;
@@ -42,8 +44,8 @@ public class Cours {
         this.cptIdSeance=0;
         this.idLieu=null;
         this.nbPlacesOccupees=0;
-        this.listeMembres=new ArrayList<Long>();
-        this.listeSeances=new HashMap<Integer, Seance>();
+        this.listeMembres=new ArrayList<>();
+        this.listeSeances=new HashMap<>();
     }
 
     public String getId() {
@@ -94,14 +96,6 @@ public class Cours {
         this.nbPlacesOccupees = nbPlacesOccupees;
     }
 
-    public Date getJourPremierCours() {
-        return jourPremierCours;
-    }
-
-    public void setJourPremierCours(Date jourPremierCours) {
-        this.jourPremierCours = jourPremierCours;
-    }
-
     public HashMap<Integer, Seance> getListeSeances() {
         return listeSeances;
     }
@@ -135,7 +129,6 @@ public class Cours {
                 ", niveauCible=" + niveauCible +
                 ", idLieu='" + idLieu + '\'' +
                 ", duree=" + duree +
-                ", jourPremierCours=" + jourPremierCours +
                 ", nbPlacesOccupees=" + nbPlacesOccupees +
                 ", listeSeances=" + listeSeances +
                 ", listeMembres=" + listeMembres +

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plannifier un cours</title>
+</head>
+<body>
+    <h1>Plannifier un cours</h1>
+    <h2>Information sur le cours</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Nom</th>
+            <th>niveauCible</th>
+            <th>idLieu</th>
+            <th>duree</th>
+            <th>nbPlacesOccupees</th>
+            <th>listeMembres</th>
+            <th>listeSeances</th>
+            <th>cptIdSeance</th>
+            <th>Plannifier</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${cours.id}">&nbsp;</td>
+            <td th:text="${cours.nom}">&nbsp;</td>
+            <td th:text="${cours.niveauCible}">&nbsp;</td>
+            <td th:text="${cours.idLieu}">&nbsp;</td>
+            <td th:text="${cours.duree}">&nbsp;</td>
+            <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
+            <td th:text="${cours.listeMembres}">&nbsp;</td>
+            <td th:text="${cours.listeSeances}">&nbsp;</td>
+            <td th:text="${cours.cptIdSeance}">&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <h2>Plannifier une scéance</h2>
+    <form th:action="@{/plannifierCours}" method="post">
+        <input name="id" type="hidden" th:value="${cours.id}">
+        <div>
+            <label>Début de la séance : </label>
+            <input type="datetime-local" name="debut-seance">
+        </div>
+        <div>
+            <label>Fin de la séance : </label>
+            <input type="datetime-local" name="fin-seance">
+        </div>
+        <div><input type="submit" value="Plannifier"/></div>
+    </form>
+
+    <br>
+    <div><a href="/consultationCours">Consulter les cours</a></div>
+    <div><a href="/">Retourner à l'accueil</a></div>
+</body>
+</html>

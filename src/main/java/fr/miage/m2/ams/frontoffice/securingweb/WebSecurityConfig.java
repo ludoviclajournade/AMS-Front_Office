@@ -38,25 +38,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*
-        http
-                .authorizeRequests()
-                .antMatchers("/", "/home").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
-        */
-
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/statistiques").access("hasRole('ADMIN')")
+                .antMatchers("/statistiques").access("hasRole('DIRECTEUR')")
                 .antMatchers("/consulterMembres").access("hasRole('SECRETAIRE')")
+                .antMatchers("/consulterMembres/{id}").access("hasRole('SECRETAIRE')")
                 .antMatchers("/gestionProfil").access("hasRole('USER')")
+                .antMatchers("/consultationCours").access("hasRole(('ENSEIGNANT'))")
+                .antMatchers("/plannifierCours/{id}").access("hasRole(('ENSEIGNANT'))")
+                .antMatchers("/creerCours").access("hasRole(('ENSEIGNANT'))")
                 .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/")
@@ -82,8 +72,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(users.username("user").password("password").roles("USER").build());
         manager.createUser(users.username("professeur").password("password").roles("ENSEIGNANT").build());
-        manager.createUser(users.username("admin").password("password").roles("USER", "ADMIN", "SECRETAIRE","ENSEIGNANT").build());
-        manager.createUser(users.username("secretaire").password("password").roles("USER", "SECRETAIRE").build());
+        manager.createUser(users.username("admin").password("password").roles("DIRECTEUR", "SECRETAIRE","ENSEIGNANT").build());
+        manager.createUser(users.username("secretaire").password("password").roles("SECRETAIRE").build());
+        manager.createUser(users.username("directeur").password("password").roles("DIRECTEUR").build());
 
         // Get membres
         String json = restService.getJson("http://localhost:10000/");
@@ -93,11 +84,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Add membres as users
         for (Membre membre : membres)
         {
-            // Set role
-            if (membre.getEnseignant() != null && membre.getEnseignant() == true) {
-                manager.createUser(users.username(membre.getMail()).password(membre.getMdp()).roles("USER","ENSEIGNANT").build());
-            } else {
-                manager.createUser(users.username(membre.getMail()).password(membre.getMdp()).roles("USER").build());
+            if ( ! manager.userExists(membre.getMail())) {
+                // Set role
+                if (membre.getEnseignant() != null && membre.getEnseignant() == true) {
+                    manager.createUser(users.username(membre.getMail()).password(membre.getMdp()).roles("USER","ENSEIGNANT").build());
+                } else {
+                    manager.createUser(users.username(membre.getMail()).password(membre.getMdp()).roles("USER").build());
+                }
             }
         }
 

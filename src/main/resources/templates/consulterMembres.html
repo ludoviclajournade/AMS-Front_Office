@@ -5,48 +5,6 @@
     <title>Consulter membres</title>
 </head>
 <body>
-
-<label><b>Choisir un membre comme enseignant</b></label>
-<form th:action="@{/consulterMembres}" method="post">
-        <label> Id : <input type="number" name="id"/> </label>
-        <SELECT name="isEnseignant" size="1">
-            <OPTION selected>1
-            <OPTION>0
-        </SELECT>
-    <input type="submit" value="Désigner comme enseigant"/>
-</form>
-
-<label><b>Changer le status d'un membre</b></label>
-<form th:action="@{/changerStatutPayement}" method="post">
-    <label> Id : <input type="number" name="idMembrePaiement"/> </label>
-    <SELECT name="statutMembre" size="1">
-        <OPTION selected>En règlege
-        <OPTION>en retard de paiement
-    </SELECT>
-    <input type="submit" value="Modifier le status"/>
-</form>
-
-<label><b>Renseigner le numéro de licence nationnal</b></label>
-<form th:action="@{/numLicenceNationnal}" method="post">
-    <label> Id : <input type="number" name="idMembreLicence"/> </label>
-    <label> Numéro de licence : <input type="text" name="numLicence"/> </label>
-    <input type="submit" value="Envoyer la licence"/>
-</form>
-
-<label><b>Valider le certificat médical</b></label>
-<form th:action="@{/validerCertificatMedical}" method="post">
-    <label> Id : <input type="number" name="idMembreCertifMedic"/> </label>
-    <label> Date : <input type="text" name="dateCertifMedic"/> </label>
-    <input type="submit" value="Envoyer la date de certification"/>
-</form>
-
-<label><b>Niveau d'un membre</b></label>
-<form th:action="@{/modifierNiveau}" method="post">
-    <label> Id : <input type="number" name="idMembreNiveau"/> </label>
-    <label> Niveau : <input type="number" name="niveau"/> </label>
-    <input type="submit" value="Modifier le niveau"/>
-</form>
-
 <h1>Consultation des membres</h1>
 <table>
     <thead>
@@ -54,23 +12,62 @@
         <th>Id</th>
         <th>Nom</th>
         <th>Prénom</th>
+        <th>Email</th>
+        <th>Adresse</th>
         <th>Enseigant</th>
         <th>Payement</th>
         <th>Certif.Medic.</th>
         <th>Numéro de licence</th>
         <th>Niveau</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="membre : ${membres}">
-        <td th:text="${membre.id}">&nbsp;</td>
-        <td th:text="${membre.nom}">&nbsp;</td>
-        <td th:text="${membre.prenom}">&nbsp;</td>
-        <td th:text="${membre.enseignant}">&nbsp;</td>
-        <td th:text="${membre.statut} + ' (' + ${membre.payement} + ')' ">&nbsp;</td>
-        <td th:text="${membre.dateCertif}">&nbsp;</td>
-        <td th:text="${membre.numLicence}">&nbsp;</td>
-        <td th:text="${membre.niveau}">&nbsp;</td>
+        <form th:action="@{/consulterMembres/} + ${membre.id}" method="post">
+            <td th:text="${membre.id}">&nbsp;</td>
+            <td th:text="${membre.nom}">&nbsp;</td>
+            <td th:text="${membre.prenom}">&nbsp;</td>
+            <td th:text="${membre.mail}"></td>
+            <td th:text="${membre.adresse}"></td>
+            <td>
+                <!-- SI ENSEIGNANT -->
+                <SELECT th:if="${membre.enseignant}" name="enseignant" size="1">
+                    <OPTION selected>1
+                    <OPTION>0
+                </SELECT>
+                <!-- SINON-->
+                <SELECT th:if="${membre.enseignant != true}" name="enseignant" size="1">
+                    <OPTION>1
+                    <OPTION selected>0
+                </SELECT>
+            </td>
+            <td>
+                <!-- SI EN REGLE -->
+                <SELECT th:if="${membre.statut == 'En règlege'}" name="statut" size="1">
+                    <OPTION selected>En règlege
+                    <OPTION>En retard de paiement
+                </SELECT>
+                <!-- SINON-->
+                <SELECT th:if="${membre.statut != 'En règlege'}" name="statut" size="1">
+                    <OPTION>En règlege
+                    <OPTION selected>En retard de paiement
+                </SELECT>
+            </td>
+            <td>
+                <input th:name="dateCertif" type="date" th:value="${#dates.format(membre.dateCertif, 'yyyy-MM-dd')}">
+
+            </td>
+            <td>
+                <input th:name="numLicence" type="text" th:value="${membre.numLicence}">
+            </td>
+            <td>
+                <input th:name="niveau" type="number" th:value="${membre.niveau}">
+            </td>
+            <td>
+                <div><input type="submit" value="Modifier"/></div>
+            </td>
+        </form>
     </tr>
     </tbody>
 </table>

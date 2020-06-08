@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultation des cours</title>
+</head>
+<body>
+<h1>Liste des cours</h1>
+<div><a href="/creerCours">Créer un cours</a></div>
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>Nom</th>
+        <th>niveauCible</th>
+        <th>idLieu</th>
+        <th>duree</th>
+        <th>nbPlacesOccupees</th>
+        <th>listeMembres</th>
+        <th>listeSeances</th>
+        <th>cptIdSeance</th>
+        <th>Plannifier</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cours : ${listeCours}">
+        <td th:text="${cours.id}">&nbsp;</td>
+        <td th:text="${cours.nom}">&nbsp;</td>
+        <td th:text="${cours.niveauCible}">&nbsp;</td>
+        <td th:text="${cours.idLieu}">&nbsp;</td>
+        <td th:text="${cours.duree}">&nbsp;</td>
+        <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
+        <td th:text="${cours.listeMembres}">&nbsp;</td>
+        <td th:text="${cours.listeSeances}">&nbsp;</td>
+        <td th:text="${cours.cptIdSeance}">&nbsp;</td>
+        <td><a th:href="'/plannifierCours/'+${cours.id}">Plannifier</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<div><a href="/">Retourner à l'accueil</a></div>
+</body>
+</html>

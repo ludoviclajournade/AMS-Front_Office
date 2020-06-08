@@ -6,29 +6,45 @@
 </head>
 <body>
     <h1>Bienvenue</h1>
+
+    <!-- Anonyme -->
     <div th:if="${ROLE_ANONYMOUS}">
-         <h2>Membre</h2>
-         <div><a href="/inscriptionMembre">S'inscrire (membre)</a></div>
+        <ul>
+            <li><a href="/inscriptionMembre">S'inscrire (membre)</a></li>
+        </ul>
     </div>
+
+    <!-- Secrétaire -->
     <div th:if="${ROLE_SECRETAIRE}">
-        <!-- Secrétaire -->
         <h2>Secrétariat</h2>
-        <div><a href="/consulterMembres">Consulter les membres</a></div>
+        <ul>
+            <li><a href="/consulterMembres">Consulter les membres</a></li>
+        </ul>
     </div>
-    <div th:if="${ROLE_ENSEIGNANT}">
+
     <!-- Enseignants -->
-    <h2>Enseignants</h2>
-    <div><a href="/creerCours">Créer un cours</a></div>
+    <div th:if="${ROLE_ENSEIGNANT}">
+        <h2>Enseignants</h2>
+        <ul>
+            <li><a href="/consultationCours">Consulter les cours</a></li>
+            <li><a href="/creerCours">Créer un cours</a></li>
+        </ul>
     </div>
-    <div th:if="${ROLE_USER}">
+
     <!-- Membre -->
-    <h2>Membre</h2>
-    <div><a href="/gestionProfil">Gérer son profil</a></div>
+    <div th:if="${ROLE_USER}">
+        <h2>Membre</h2>
+        <ul>
+            <li><a href="/gestionProfil">Gérer son profil</a></li>
+        </ul>
     </div>
-    <div th:if="${ROLE_ADMIN}">
+
     <!-- Président -->
-    <h2>Président</h2>
-    <div><a href="/statistiques">Statistiques</a></div>
+    <div th:if="${ROLE_DIRECTEUR}">
+        <h2>Président</h2>
+        <ul>
+            <li><a href="/statistiques">Statistiques</a></li>
+        </ul>
     </div>
 
     <br>

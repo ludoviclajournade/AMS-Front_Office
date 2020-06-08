@@ -5,14 +5,15 @@ import com.google.gson.GsonBuilder;
 import fr.miage.m2.ams.frontoffice.consumingrest.RestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Controller
 public class MembreController {
@@ -34,13 +35,19 @@ public class MembreController {
     }
 
     @PostMapping("/inscriptionMembre")
-    public String postMembreForm(@ModelAttribute Membre membre)
+    public String postMembreForm(Model model, @ModelAttribute Membre membre)
     {
-        log.info(gson.toJson(membre));
-        restService.postJsonMembre("http://localhost:10000/",membre);
-        restService.getJson("http://localhost:8080/user/add/"+membre.getMail()+"/"+membre.getMdp());
-
-        return "login?membreCreer";
+        Boolean exists = new Boolean(restService.getJson("http://localhost:8080/user/exists/"+membre.getMail()));
+        if (! exists) {
+            membre.setEnseignant(false);
+            log.info(gson.toJson(membre));
+            restService.postJsonMembre("http://localhost:10000/",membre);
+            restService.getJson("http://localhost:8080/user/add/"+membre.getMail()+"/"+membre.getMdp()+"/false");
+            return "login";
+        } else {
+         model.addAttribute("alreadyExist",true);
+            return "inscriptionMembre";
+        }
     }
 
     @GetMapping("/consulterMembres")
@@ -57,132 +64,58 @@ public class MembreController {
         return "consulterMembres";
     }
 
-    @PostMapping("/consulterMembres")
-    public String postConsulterMembres(@RequestParam Integer id,@RequestParam String isEnseignant, Model model)
-    {
-        // Modifier le membre en enseignant
-        log.info("id:"+id+", isEnseignant:"+isEnseignant);
-        restService.postJsonMembre("http://localhost:10000/modifEnseignant/"+isEnseignant+"/"+id);
+    @PostMapping("/consulterMembres/{id}")
+    public String postModifierMembre(Model model,
+                                     @PathVariable("id") String id,
+                                     @RequestParam("numLicence") String numLicence,
+                                     @RequestParam("niveau") Integer niveau,
+                                     @RequestParam("dateCertif") String dateCertif,
+                                     @RequestParam("statut") String statut,
+                                     @RequestParam("enseignant") String enseignant) throws ParseException {
 
-        // Récupérer la nouvelle liste des membres
         String json = restService.getJson("http://localhost:10000/");
         log.info(json);
 
         Membre membres[] = gson.fromJson(json, Membre[].class);
 
-        log.info(membres.toString());
+        // Retrive membre and update him
+        Membre membre = null;
+        int i=0;
+        while (membre == null && i < membres.length)
+        {
+            if (membres[i].getId().equals(new Long(id))) {
+                membre=membres[i];
+            }
+            i+=1;
+        }
+        // update membre
+
+        if (membre != null) {
+            boolean isEnseignant = (enseignant.equals("1"))  ? true : false;
+            // Only if enseignant statut changed
+            if (membre.getEnseignant() == null || membre.getEnseignant() != isEnseignant) {
+                log.info("Statut enseignant modifié : "+membre.getEnseignant()+ " to "+isEnseignant);
+                restService.postJsonMembre("http://localhost:10000/modifEnseignant/"+enseignant+"/"+id);
+                restService.getJson("http://localhost:8080/user/delete/"+membre.getMail());
+                restService.getJson("http://localhost:8080/user/add/"+membre.getMail()+"/"+membre.getMdp()+"/"+isEnseignant);
+            }
+
+            // Modifie le membre
+            membre.setNumLicence(numLicence);
+            membre.setNiveau(niveau);
+            if (dateCertif != null && dateCertif != "") {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date realDateCCertif = dateFormat.parse(dateCertif);
+                membre.setDateCertif(realDateCCertif);
+            }
+            membre.setStatut(statut);
+            membre.setEnseignant(isEnseignant);
+            restService.postJsonMembre("http://localhost:10000/"+id,membre);
+            log.info("Membre " + id + " modifié");
+        }
+
 
         model.addAttribute("membres",membres);
-
-
-        return "consulterMembres";
-    }
-
-    @PostMapping("/changerStatutPayement")
-    public String postValiderPaiement(@RequestParam Integer idMembrePaiement, @RequestParam String statutMembre, Model model)
-    {
-        // recup membre
-        String json = restService.getJson("http://localhost:10000/"+idMembrePaiement);
-        log.info(json);
-        Membre membre = gson.fromJson(json, Membre.class);
-
-        // Modifier le statut du membre
-        membre.setStatut(statutMembre);
-        restService.postJsonMembre("http://localhost:10000/"+idMembrePaiement,membre);
-
-        // Récupérer la nouvelle liste des membres
-        json = restService.getJson("http://localhost:10000/");
-        log.info(json);
-
-        Membre membres[] = gson.fromJson(json, Membre[].class);
-
-        log.info(membres.toString());
-
-        model.addAttribute("membres",membres);
-
-
-        return "consulterMembres";
-    }
-
-    @PostMapping("/validerCertificatMedical")
-    public String postValiderCertificatMedical(@RequestParam Integer idMembreCertifMedic, @RequestParam String dateCertifMedic, Model model)
-    {
-        // recup membre
-        String json = restService.getJson("http://localhost:10000/"+idMembreCertifMedic);
-        log.info(json);
-        Membre membre = gson.fromJson(json, Membre.class);
-
-        // Modifier le statut du membre
-        membre.setDateCertif(dateCertifMedic);
-        restService.postJsonMembre("http://localhost:10000/"+idMembreCertifMedic,membre);
-
-        // Récupérer la nouvelle liste des membres
-        json = restService.getJson("http://localhost:10000/");
-        log.info(json);
-
-        Membre membres[] = gson.fromJson(json, Membre[].class);
-
-        log.info(membres.toString());
-
-        model.addAttribute("membres",membres);
-
-
-        return "consulterMembres";
-    }
-
-    @PostMapping("/numLicenceNationnal")
-    public String postNumLicenceNationnal(@RequestParam Integer idMembreLicence, @RequestParam String numLicence, Model model)
-    {
-        // recup membre
-        String json = restService.getJson("http://localhost:10000/"+idMembreLicence);
-        log.info(json);
-        Membre membre = gson.fromJson(json, Membre.class);
-
-        log.info("idMembreLicence:"+idMembreLicence+", numLicence:"+numLicence);
-
-        // Modifier le statut du membre
-        membre.setNumLicence(numLicence);
-        restService.postJsonMembre("http://localhost:10000/"+idMembreLicence,membre);
-
-        // Récupérer la nouvelle liste des membres
-        json = restService.getJson("http://localhost:10000/");
-        log.info(json);
-
-        Membre membres[] = gson.fromJson(json, Membre[].class);
-
-        log.info(membres.toString());
-
-        model.addAttribute("membres",membres);
-
-
-        return "consulterMembres";
-    }
-
-    @PostMapping("/modifierNiveau")
-    public String postModifierNiveau(@RequestParam Integer idMembreNiveau, @RequestParam Integer niveau, Model model)
-    {
-        // recup membre
-        String json = restService.getJson("http://localhost:10000/"+idMembreNiveau);
-        log.info(json);
-        Membre membre = gson.fromJson(json, Membre.class);
-
-        log.info("idMembreNiveau:"+idMembreNiveau+", niveau:"+niveau);
-
-        // Modifier le statut du membre
-        membre.setNiveau(niveau);
-        restService.postJsonMembre("http://localhost:10000/"+idMembreNiveau,membre);
-
-        // Récupérer la nouvelle liste des membres
-        json = restService.getJson("http://localhost:10000/");
-        log.info(json);
-
-        Membre membres[] = gson.fromJson(json, Membre[].class);
-
-        log.info(membres.toString());
-
-        model.addAttribute("membres",membres);
-
-
         return "consulterMembres";
     }
 

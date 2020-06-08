@@ -6,11 +6,13 @@
 </head>
 <body>
     <h1>Statistiques</h1>
-    <div><label th:text="'Nombre de membres : ' + ${nbMembres}">&nbsp;</label></div>
-    <div><label th:text="'Nombre d\'enseigants : ' + ${nbEnseignants}">&nbsp;</label></div>
-    <div><label th:text="'Nombre de cours positionnés : ' + ${nbCoursPositionned}+'/'+${nbCours}"></label></div>
-    <div><label th:text="'Nombre de cotisations réglés : '+${nbCotisationsOK}"></label></div>
-    <div><label th:text="'Nombre de cotisations en attente : '+${nbCotisationsWaiting}"></label></div>
+    <ul>
+        <li><label th:text="'Nombre de membres : ' + ${nbMembres}">&nbsp;</label></li>
+        <li><label th:text="'Nombre d\'enseigants : ' + ${nbEnseignants}">&nbsp;</label></li>
+        <li><label th:text="'Nombre de cours positionnés : ' + ${nbCoursPositionned}+'/'+${nbCours}"></label></li>
+        <li><label th:text="'Nombre de cotisations réglés : '+${nbCotisationsOK}"></label></li>
+        <li><label th:text="'Nombre de cotisations en attente : '+${nbCotisationsWaiting}"></label></li>
+    </ul>
     <br>
     <div><a href="/">Retourner à l'accueil</a></div>
 </body>

@@ -60,15 +60,15 @@ public class StatistiquesController {
         // Count nb enseigants and members and cotisations
         for (Membre membre : membres)
         {
-            if (membre.enseignant) {
+            if (membre.getEnseignant() != null && membre.getEnseignant()) {
                 nbEnseignants+=1;
             } else {
                 nbMembres+=1;
             }
 
-            if (membre.getStatut().equals("En règlege")) {
+            if (membre.getStatut() != null && membre.getStatut().equals("En règlege")) {
                 nbCotisationsOK+=1;
-            } else if (membre.getStatut().equals("En retard de paiement")) {
+            } else if (membre.getStatut() != null && membre.getStatut().equals("En retard de paiement")) {
                 nbCotisationsWaiting+=1;
             }
         }

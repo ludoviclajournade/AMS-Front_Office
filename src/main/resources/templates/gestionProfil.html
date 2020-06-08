@@ -5,7 +5,7 @@
     <title>Gestion du profil</title>
 </head>
 <body>
-<h1>Gestion du profile</h1>
+<h1>Gestion du profil</h1>
 <form th:action="@{/modifierMembre}" method="post">
     <div>
         <label>Id : </label>
@@ -40,7 +40,7 @@
         <input type="text" name="numLicence" th:value="${membre.numLicence}" readonly="readonly" />
     </div>
     <div>
-        <label>Date de certification : </label>
+        <label>Certificat médical : </label>
         <input type="text" name="dateCertif" th:value="${membre.dateCertif}" readonly="readonly" />
     </div>
     <div>
