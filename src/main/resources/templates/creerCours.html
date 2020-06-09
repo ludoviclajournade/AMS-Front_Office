@@ -10,6 +10,13 @@
         <div><label> Nom : <input type="text" name="nom"/> </label></div>
         <div><label> Niveau cible : <input type="number" name="niveauCible"/> </label></div>
         <div><label> Durée : <input type="number" name="duree"/> </label></div>
+        <div>
+            <select name="lieuId">
+                <div th:each="lieu : ${lieux}">
+                    <option th:value="${lieu.id}" th:text="${lieu.nom}"></option>
+                </div>
+            </select>
+        </div>
         <div><input type="submit" value="Créer le cours"/></div>
     </form>
     <div><a href="/">Retourner à l'accueil</a></div>

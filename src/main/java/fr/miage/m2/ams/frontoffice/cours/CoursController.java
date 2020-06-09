@@ -43,19 +43,29 @@ public class CoursController {
     @GetMapping("/creerCours")
     public String getCreerLesson(Model model)
     {
+        // Get lieux
+        String json = restService.getJson("http://localhost:10001/cours/getLieux");
+        log.info(json);
+        Lieu[] lieux = gson.fromJson(json, Lieu[].class);
+
+
+        model.addAttribute("lieux",lieux);
+
         return "creerCours";
     }
 
     @PostMapping("/creerCours")
     public String postCreerCours(Model model,
                                  @RequestParam String nom, @RequestParam Integer niveauCible,
-                                 @RequestParam Integer duree) throws ParseException {
-        log.info(gson.toJson("nom:"+nom+", niveauCible:"+niveauCible+", duree:"+duree));
+                                 @RequestParam Integer duree,
+                                 @RequestParam String lieuId) throws ParseException {
+        log.info(gson.toJson("nom:"+nom+", niveauCible:"+niveauCible+", duree:"+duree+", lieuId:"+lieuId));
 
         Cours cours = new Cours();
             cours.setNom(nom);
             cours.setNiveauCible(niveauCible);
             cours.setDuree(duree);
+            cours.setIdLieu(lieuId);
         restService.postJsonCours("http://localhost:10001/cours/create",cours);
 
         String json = restService.getJson("http://localhost:10001/cours/getAllCours");
