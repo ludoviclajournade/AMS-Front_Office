@@ -95,7 +95,6 @@ public class MembreController {
             // Only if enseignant statut changed
             if (membre.getEnseignant() == null || membre.getEnseignant() != isEnseignant) {
                 log.info("Statut enseignant modifié : "+membre.getEnseignant()+ " to "+isEnseignant);
-                restService.postJsonMembre("http://localhost:10000/modifEnseignant/"+enseignant+"/"+id);
                 restService.getJson("http://localhost:8080/user/delete/"+membre.getMail());
                 restService.getJson("http://localhost:8080/user/add/"+membre.getMail()+"/"+membre.getMdp()+"/"+isEnseignant);
             }

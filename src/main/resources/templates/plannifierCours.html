@@ -18,7 +18,6 @@
             <th>nbPlacesOccupees</th>
             <th>listeMembres</th>
             <th>listeSeances</th>
-            <th>cptIdSeance</th>
             <th>Plannifier</th>
         </tr>
         </thead>
@@ -32,7 +31,6 @@
             <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
             <td th:text="${cours.listeMembres}">&nbsp;</td>
             <td th:text="${cours.listeSeances}">&nbsp;</td>
-            <td th:text="${cours.cptIdSeance}">&nbsp;</td>
         </tr>
         </tbody>
     </table>
@@ -41,13 +39,17 @@
     <h2>Plannifier une scéance</h2>
     <form th:action="@{/plannifierCours}" method="post">
         <input name="id" type="hidden" th:value="${cours.id}">
+        <input name="duree" type="hidden" th:value="${cours.duree}">
         <div>
             <label>Début de la séance : </label>
             <input type="datetime-local" name="debut-seance">
         </div>
         <div>
-            <label>Fin de la séance : </label>
-            <input type="datetime-local" name="fin-seance">
+            <select name="choixEnseignant">
+                <div th:each="enseignant : ${enseignants}">
+                    <option th:value="${enseignant.id}" th:text="${enseignant.nom}"></option>
+                </div>
+            </select>
         </div>
         <div><input type="submit" value="Plannifier"/></div>
     </form>

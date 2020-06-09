@@ -10,6 +10,9 @@ public class Seance {
             (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     public LocalDateTime debutSeance;
 
+    public Seance() {
+    }
+
     public Long idEnseignant;
 
 
@@ -35,5 +38,10 @@ public class Seance {
                 "debutSeance=" + debutSeance +
                 ", idEnseignant=" + idEnseignant +
                 '}';
+    }
+
+    public Seance(LocalDateTime debutSeance, Long idEnseignant) {
+        this.debutSeance = debutSeance;
+        this.idEnseignant = idEnseignant;
     }
 }

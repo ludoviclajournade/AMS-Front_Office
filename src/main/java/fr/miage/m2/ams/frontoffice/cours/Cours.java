@@ -41,11 +41,11 @@ public class Cours {
     private int cptIdSeance;
 
     public Cours() {
-        this.cptIdSeance=0;
-        this.idLieu=null;
-        this.nbPlacesOccupees=0;
-        this.listeMembres=new ArrayList<>();
-        this.listeSeances=new HashMap<>();
+        this.cptIdSeance = 0;
+        this.idLieu = null;
+        this.nbPlacesOccupees = 0;
+        this.listeMembres = new ArrayList<>();
+        this.listeSeances = new HashMap<>();
     }
 
     public String getId() {
@@ -118,7 +118,7 @@ public class Cours {
 
     public void addSeance(Seance seance) {
         this.listeSeances.put(cptIdSeance, seance);
-        cptIdSeance+=1;
+        cptIdSeance += 1;
     }
 
     @Override

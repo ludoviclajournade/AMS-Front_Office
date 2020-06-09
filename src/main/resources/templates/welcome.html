@@ -48,7 +48,11 @@
     </div>
 
     <br>
-    <a href="/login">Se connecter</a>
-    <a href="/login?logout">Se déconnecter</a>
+    <div th:if="${ROLE_ANONYMOUS}">
+        <a href="/login">Se connecter</a>
+    </div>
+    <div th:unless="${ROLE_ANONYMOUS}">
+        <a href="/login?logout">Se déconnecter</a>
+    </div>
 </body>
 </html>

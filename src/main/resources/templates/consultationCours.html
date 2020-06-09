@@ -18,7 +18,6 @@
         <th>nbPlacesOccupees</th>
         <th>listeMembres</th>
         <th>listeSeances</th>
-        <th>cptIdSeance</th>
         <th>Plannifier</th>
     </tr>
     </thead>
@@ -32,7 +31,6 @@
         <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
         <td th:text="${cours.listeMembres}">&nbsp;</td>
         <td th:text="${cours.listeSeances}">&nbsp;</td>
-        <td th:text="${cours.cptIdSeance}">&nbsp;</td>
         <td><a th:href="'/plannifierCours/'+${cours.id}">Plannifier</a></td>
     </tr>
     </tbody>

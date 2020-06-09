@@ -1,6 +1,9 @@
 package fr.miage.m2.ams.frontoffice.consumingrest;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import fr.miage.m2.ams.frontoffice.cours.Cours;
+import fr.miage.m2.ams.frontoffice.cours.Seance;
 import fr.miage.m2.ams.frontoffice.membres.Membre;
 import fr.miage.m2.ams.frontoffice.membres.MembreController;
 import org.slf4j.Logger;
@@ -14,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -238,6 +243,7 @@ public class RestService {
         map.put("numLicence", membre.getNumLicence());
         map.put("dateCertif", membre.getDateCertif());
         map.put("statut", membre.getStatut());
+        map.put("enseignant", membre.getEnseignant());
 
         // build the request
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
@@ -261,9 +267,6 @@ public class RestService {
      * Partie personnalisée
      */
     public void postJsonCours(String url, Cours cours) {
-        // Init date converter
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
         // create headers
         HttpHeaders headers = new HttpHeaders();
         // set `content-type` header
@@ -289,6 +292,38 @@ public class RestService {
             log.info("Cours créé");
         } else {
             log.info("Cours non créé");
+            log.info(response.toString());
+        }
+    }
+
+    public void postJsonSeance(String url, Seance seance) {
+        // create headers
+        HttpHeaders headers = new HttpHeaders();
+        // set `content-type` header
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        // set `accept` header
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        // create a map for post parameters
+        Map<String, Object> map = new HashMap<>();
+
+        log.info("debutSeance:"+seance.getDebutSeance()+", idEnseignant:"+seance.getIdEnseignant());
+
+        map.put("debutSeance", seance.getDebutSeance());
+        map.put("idEnseignant", seance.getIdEnseignant());
+
+        // build the request
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+
+        // send POST request
+        ResponseEntity<Seance> response = this.restTemplate.postForEntity(url, entity, Seance.class);
+
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            log.info("Seance ajoutée");
+        } else {
+            log.info("Séance non ajoutée");
             log.info(response.toString());
         }
     }

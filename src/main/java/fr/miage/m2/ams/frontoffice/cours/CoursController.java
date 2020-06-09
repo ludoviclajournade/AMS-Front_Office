@@ -1,7 +1,6 @@
 package fr.miage.m2.ams.frontoffice.cours;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import fr.miage.m2.ams.frontoffice.consumingrest.RestService;
 import fr.miage.m2.ams.frontoffice.membres.Membre;
 import fr.miage.m2.ams.frontoffice.membres.MembreController;
@@ -12,10 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Controller
@@ -25,9 +29,14 @@ public class CoursController {
     private RestService restService;
 
     public CoursController() {
-        GsonBuilder builder = new GsonBuilder();
-        this.gson = new GsonBuilder()
-                .setDateFormat("dd-MM-yyyy").create();
+        this.gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
+            @Override
+            public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+
+                return LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")); }
+
+        }).create();
+
         this.restService = new RestService();
     }
 
@@ -47,7 +56,6 @@ public class CoursController {
             cours.setNom(nom);
             cours.setNiveauCible(niveauCible);
             cours.setDuree(duree);
-
         restService.postJsonCours("http://localhost:10001/cours/create",cours);
 
         String json = restService.getJson("http://localhost:10001/cours/getAllCours");
@@ -86,35 +94,42 @@ public class CoursController {
         log.info(json);
         Cours cours = gson.fromJson(json, Cours.class);
 
+
+        // Get Enseignants
+        String jsonMembres = restService.getJson("http://localhost:10000/");
+        Membre membres[] = gson.fromJson(jsonMembres, Membre[].class);
+        ArrayList<Membre> enseignants = new ArrayList<>();
+        for (Membre membre : membres) {
+            if (membre.getEnseignant()) {
+                enseignants.add(membre);
+            }
+        }
+
         // add in model
         model.addAttribute("cours",cours);
+        model.addAttribute("enseignants",enseignants);
 
         return "plannifierCours";
     }
 
     @PostMapping("/plannifierCours")
-    public String postPlannifierCours(Model model, @RequestParam("id") String id,
+    public String postPlannifierCours(Model model,
+                                      @RequestParam("id") String idCours,
+                                      @RequestParam("choixEnseignant") Long idEnseignant,
                                       @RequestParam("debut-seance") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime debut,
-                                      @RequestParam("fin-seance") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fin)
+                                      @RequestParam("duree") int duree)
     {
 
-        log.info("id:"+id+", debut:"+debut+ ", fin:"+fin);
+        log.info("idCours:"+idCours+", idEnseignant:"+idEnseignant+", debut:"+debut+ ", duree:"+duree);
 
-        // if debut before fin, count nb hours
-        if (debut.isBefore(fin)) {
-            long hours = debut.until( fin, ChronoUnit.HOURS );
-            log.info("hours:"+hours);
-            // Créer une séance
-        }
 
-        // Get cours
-        String json = restService.getJson("http://localhost:10001/cours/getCoursById/"+id);
-        log.info(json);
-        Cours cours = gson.fromJson(json, Cours.class);
 
-        // add in model
-        model.addAttribute("cours",cours);
+        // Créer une séance
+        //LocalDateTime fin = debut.plusMinutes(new Long(duree));
+        Seance seance = new Seance(debut,idEnseignant);
+        restService.postJsonSeance("http://localhost:10001/cours/addSeance/"+idCours,seance);
 
-        return "plannifierCours";
+
+        return "welcome";
     }
 }
