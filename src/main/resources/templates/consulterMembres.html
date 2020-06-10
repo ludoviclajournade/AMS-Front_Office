@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Consulter membres</title>
+    <title><h1>Consulter membres</h1></title>
 </head>
 <body>
 <div class="container">
@@ -31,7 +31,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th scope="row":each="membre : ${membres}">
+            <tr scope="row" th:each="membre : ${membres}">
                 <form th:action="@{/consulterMembres/} + ${membre.id}" method="post">
                     <td th:text="${membre.id}">&nbsp;</td>
                     <td th:text="${membre.nom}">&nbsp;</td>

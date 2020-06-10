@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Créer un cours</title>
+    <title><h1>Créer un cours</h1></title>
 </head>
 <body>
-    <h1>Créer un cours</h1>
-    <form th:action="@{/creerCours}" method="post">
-        <div><label> Nom : <input type="text" name="nom"/> </label></div>
-        <div><label> Niveau cible : <input type="number" name="niveauCible"/> </label></div>
-        <div><label> Durée : <input type="number" name="duree"/> </label></div>
-        <div><input type="submit" value="Créer le cours"/></div>
-    </form>
-    <div><a href="/">Retourner à l'accueil</a></div>
+    <div class="container">
+        <h1>Créer un cours</h1>
+        <form th:action="@{/creerCours}" method="post">
+            <div class="row">
+                <div class="col text-left"><label> Nom : <input class="form-control" type="text" name="nom"/> </label></div>
+                <div class="col text-center"><label> Niveau cible : <input class="form-control" type="number" name="niveauCible"/> </label></div>
+                <div class="col text-right"><label> Durée : <input class="form-control" type="number" name="duree"/> </label></div>
+            </div>
+            <div class="row">
+                <div class="col"><input class="form-control" type="submit" value="Créer le cours"/></div>
+            </div>
+        </form>
+        <br/>
+        <div class="row"><a class="btn btn-primary" href="/" role="button">Retourner à l'accueil</a></div>
+    </div>
 </body>
 </html>
