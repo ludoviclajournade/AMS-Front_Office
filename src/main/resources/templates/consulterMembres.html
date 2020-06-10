@@ -1,76 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Consulter membres</title>
 </head>
 <body>
-<h1>Consultation des membres</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Email</th>
-        <th>Adresse</th>
-        <th>Enseigant</th>
-        <th>Payement</th>
-        <th>Certif.Medic.</th>
-        <th>Numéro de licence</th>
-        <th>Niveau</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="membre : ${membres}">
-        <form th:action="@{/consulterMembres/} + ${membre.id}" method="post">
-            <td th:text="${membre.id}">&nbsp;</td>
-            <td th:text="${membre.nom}">&nbsp;</td>
-            <td th:text="${membre.prenom}">&nbsp;</td>
-            <td th:text="${membre.mail}"></td>
-            <td th:text="${membre.adresse}"></td>
-            <td>
-                <!-- SI ENSEIGNANT -->
-                <SELECT th:if="${membre.enseignant}" name="enseignant" size="1">
-                    <OPTION selected>1
-                    <OPTION>0
-                </SELECT>
-                <!-- SINON-->
-                <SELECT th:if="${membre.enseignant != true}" name="enseignant" size="1">
-                    <OPTION>1
-                    <OPTION selected>0
-                </SELECT>
-            </td>
-            <td>
-                <!-- SI EN REGLE -->
-                <SELECT th:if="${membre.statut == 'En règlege'}" name="statut" size="1">
-                    <OPTION selected>En règlege
-                    <OPTION>En retard de paiement
-                </SELECT>
-                <!-- SINON-->
-                <SELECT th:if="${membre.statut != 'En règlege'}" name="statut" size="1">
-                    <OPTION>En règlege
-                    <OPTION selected>En retard de paiement
-                </SELECT>
-            </td>
-            <td>
-                <input th:name="dateCertif" type="date" th:value="${#dates.format(membre.dateCertif, 'yyyy-MM-dd')}">
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Consultation des membres</h1>
+        </div>
+    </div>
 
-            </td>
-            <td>
-                <input th:name="numLicence" type="text" th:value="${membre.numLicence}">
-            </td>
-            <td>
-                <input th:name="niveau" type="number" th:value="${membre.niveau}">
-            </td>
-            <td>
-                <div><input type="submit" value="Modifier"/></div>
-            </td>
-        </form>
-    </tr>
-    </tbody>
-</table>
-<div><a href="/">Retourner à l'accueil</a></div>
+    <div class="row">
+        <table>
+            <thead>
+            <tr class="table">
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Enseigant</th>
+                <th scope="col">Payement</th>
+                <th scope="col">Certif.Medic.</th>
+                <th scope="col">Numéro de licence</th>
+                <th scope="col">Niveau</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th scope="row":each="membre : ${membres}">
+                <form th:action="@{/consulterMembres/} + ${membre.id}" method="post">
+                    <td th:text="${membre.id}">&nbsp;</td>
+                    <td th:text="${membre.nom}">&nbsp;</td>
+                    <td th:text="${membre.prenom}">&nbsp;</td>
+                    <td th:text="${membre.mail}"></td>
+                    <td th:text="${membre.adresse}"></td>
+                    <td>
+                        <!-- SI ENSEIGNANT -->
+                        <SELECT class="form-control" th:if="${membre.enseignant}" name="enseignant" size="1">
+                            <OPTION selected>1
+                            <OPTION>0
+                        </SELECT>
+                        <!-- SINON-->
+                        <SELECT class="form-control" th:if="${membre.enseignant != true}" name="enseignant" size="1">
+                            <OPTION>1
+                            <OPTION selected>0
+                        </SELECT>
+                    </td>
+                    <td>
+                        <!-- SI EN REGLE -->
+                        <SELECT class="form-control" th:if="${membre.statut == 'En règlege'}" name="statut" size="1">
+                            <OPTION selected>En règlege
+                            <OPTION>En retard de paiement
+                        </SELECT>
+                        <!-- SINON-->
+                        <SELECT class="form-control" th:if="${membre.statut != 'En règlege'}" name="statut" size="1">
+                            <OPTION>En règlege
+                            <OPTION selected>En retard de paiement
+                        </SELECT>
+                    </td>
+                    <td>
+                        <input class="form-control" th:name="dateCertif" type="date" th:value="${#dates.format(membre.dateCertif, 'yyyy-MM-dd')}">
+
+                    </td>
+                    <td>
+                        <input class="form-control" th:name="numLicence" type="text" th:value="${membre.numLicence}">
+                    </td>
+                    <td>
+                        <input class="form-control" th:name="niveau" type="number" th:value="${membre.niveau}">
+                    </td>
+                    <td>
+                        <div><input class="form-control" type="submit" value="Modifier"/></div>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div><a class="btn btn-primary" role="button" href="/">Retourner à l'accueil</a></div>
+</div>
 </body>
 </html>
