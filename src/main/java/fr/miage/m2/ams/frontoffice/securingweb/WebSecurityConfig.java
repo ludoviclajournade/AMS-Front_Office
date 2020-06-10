@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/consultationCours").access("hasRole(('ENSEIGNANT'))")
                 .antMatchers("/plannifierCours/{id}").access("hasRole(('ENSEIGNANT'))")
                 .antMatchers("/creerCours").access("hasRole(('ENSEIGNANT'))")
+                .antMatchers("/inscriptionCours").access("hasRole('USER')")
                 .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/")

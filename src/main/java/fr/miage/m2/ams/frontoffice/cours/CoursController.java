@@ -7,6 +7,7 @@ import fr.miage.m2.ams.frontoffice.membres.MembreController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -86,11 +87,22 @@ public class CoursController {
         String json = restService.getJson("http://localhost:10001/cours/getAllCours");
         log.info(json);
 
-        Cours[] cours = gson.fromJson(json, Cours[].class);
+        Cours[] listCours = gson.fromJson(json, Cours[].class);
 
-        log.info(cours.toString());
+        log.info(listCours.toString());
 
-        model.addAttribute("listeCours",cours);
+        // Petit triche pour les lieu, comme l'id est un string, on le remplace par le nom du lieu
+        // Ce n'est pas optimisé mais pour notre petite quantité de données ça passe
+        for (Cours cours : listCours) {
+            if (cours.getIdLieu() != null && cours.getIdLieu() != "" ) {
+                String jsonLieu = restService.getJson("http://localhost:10001/cours/getLieuById/"+cours.getIdLieu());
+                log.info(json);
+                Lieu lieu = gson.fromJson(jsonLieu, Lieu.class);
+                cours.setIdLieu(lieu.getNom());
+            }
+        }
+
+        model.addAttribute("listeCours",listCours);
 
         return "consultationCours";
     }
@@ -141,5 +153,53 @@ public class CoursController {
 
 
         return "welcome";
+    }
+
+    @GetMapping("/inscriptionCours")
+    public String getInscriptionCours(Model model)
+    {
+        // get username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("username:"+username);
+        // get user information
+        String json = restService.getJson("http://localhost:10000/email/"+username);
+        log.info(json);
+        Membre membre = gson.fromJson(json, Membre.class);
+        log.info(membre.toString());
+
+
+
+        // Récupération des cours
+        String jsonCours = restService.getJson("http://localhost:10001/cours/getAllCours");
+        log.info(jsonCours);
+
+        Cours[] listCours = gson.fromJson(jsonCours, Cours[].class);
+
+        log.info(listCours.toString());
+
+        // Petit triche pour les lieu, comme l'id est un string, on le remplace par le nom du lieu
+        // Ce n'est pas optimisé mais pour notre petite quantité de données ça passe
+        for (Cours cours : listCours) {
+            if (cours.getIdLieu() != null && cours.getIdLieu() != "" ) {
+                String jsonLieu = restService.getJson("http://localhost:10001/cours/getLieuById/"+cours.getIdLieu());
+                log.info(jsonLieu);
+                Lieu lieu = gson.fromJson(jsonLieu, Lieu.class);
+                cours.setIdLieu(lieu.getNom());
+            }
+        }
+
+        model.addAttribute("listeCours",listCours);
+        model.addAttribute("membre",membre);
+
+        return "inscriptionCours";
+    }
+
+    @GetMapping("/inscriptionCours/{idCours}/{idMembre}")
+    public String postInscriptionCours(Model model,@PathVariable("idCours") String idCours,@PathVariable("idMembre") Long idMembre)
+    {
+        log.info("url: http://localhost:10001/cours/inscrireCours/"+idCours+"/"+idMembre);
+        String json = restService.getJson("http://localhost:10001/cours/inscrireCours/"+idCours+"/"+idMembre);
+
+        return "inscriptionCours";
     }
 }

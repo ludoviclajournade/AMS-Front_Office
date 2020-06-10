@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription aux cours</title>
+</head>
+<body>
+<h1>Liste des cours</h1>
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>Nom</th>
+        <th>niveauCible</th>
+        <th>Lieu</th>
+        <th>duree</th>
+        <th>nbPlacesOccupees</th>
+        <th>listeMembres</th>
+        <th>listeSeances</th>
+        <th>S'inscrire</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cours : ${listeCours}">
+        <div th:if="${membre.niveau} == ${cours.niveauCible}">
+            <td th:text="${cours.id}">&nbsp;</td>
+            <td th:text="${cours.nom}">&nbsp;</td>
+            <td th:text="${cours.niveauCible}">&nbsp;</td>
+            <td th:text="${cours.idLieu}">&nbsp;</td>
+            <td th:text="${cours.duree}">&nbsp;</td>
+            <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
+            <td th:text="${cours.listeMembres}">&nbsp;</td>
+            <td th:text="${cours.listeSeances}">&nbsp;</td>
+            <td><a th:href="'/inscriptionCours/'+${cours.id}+'/'+${membre.id}">Inscription</a></td>
+        </div>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<div><a href="/">Retourner à l'accueil</a></div>
+</body>
+</html>

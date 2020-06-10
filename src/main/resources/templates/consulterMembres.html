@@ -62,7 +62,7 @@
                 <input th:name="numLicence" type="text" th:value="${membre.numLicence}">
             </td>
             <td>
-                <input th:name="niveau" type="number" th:value="${membre.niveau}">
+                <input th:name="niveau" type="number" th:value="${membre.niveau}" min="1" max="5">
             </td>
             <td>
                 <div><input type="submit" value="Modifier"/></div>
