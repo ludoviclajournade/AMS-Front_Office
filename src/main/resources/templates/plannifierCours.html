@@ -42,7 +42,7 @@
         <input name="duree" type="hidden" th:value="${cours.duree}">
         <div>
             <label>Début de la séance : </label>
-            <input type="datetime-local" name="debut-seance">
+            <input type="datetime-local" name="debut-seance" step="1800" min="minDate">
         </div>
         <div>
             <select name="choixEnseignant">
@@ -51,6 +51,7 @@
                 </div>
             </select>
         </div>
+        <label>Nombre de répétition : </label><input type="number" name="repetition" min="1">
         <div><input type="submit" value="Plannifier"/></div>
     </form>
 

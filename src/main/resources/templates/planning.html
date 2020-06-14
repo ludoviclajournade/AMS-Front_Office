@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Planning</title>
+</head>
+
+<style>
+    #agenda {
+        text-align: center;
+    }
+    .min {
+        display: flex;
+    }
+    .day {
+        padding: 5px;
+        min-width: 150px;
+        max-width: 150px;
+        width: 150px;
+        height: 30px;
+        border: 1px black;
+        border-style: solid;
+    }
+    .day.colored {
+        background: lightgrey;
+    }
+    .mediumText {
+        font-size: 12px;
+    }
+    .smallText {
+        font-size: 10px;
+    }
+    .tinyText {
+        font-size: 5px;
+    }
+</style>
+
+
+<body>
+<h1>Planning</h1>
+<div><a href="/creerCours">Créer un cours</a></div>
+<div>
+    <a th:href="'/planning/' + ${nextWeek-1} ">Semaine dernière</a>
+    <a th:href="'/planning/' + ${nextWeek+1} ">Semaine suivante</a>
+</div>
+
+<div id="agenda">
+    <!-- header -->
+    <div class="min">
+        <div class="day"></div> <!-- Colonne horaire -->
+        <div class="day"><label class="mediumText">Lundi</label><br><label class="mediumText" th:text="${daysList[0]}"></label></div>
+        <div class="day"><label class="mediumText">Mardi</label><br><label class="mediumText" th:text="${daysList[1]}"></label></div>
+        <div class="day"><label class="mediumText">Mercredi</label><br><label class="mediumText" th:text="${daysList[2]}"></label></div>
+        <div class="day"><label class="mediumText">Jeudi</label><br><label class="mediumText" th:text="${daysList[3]}"></label></div>
+        <div class="day"><label class="mediumText"> Vendredi</label><br><label class="mediumText" th:text="${daysList[4]}"></label></div>
+        <div class="day"><label class="mediumText">Samedi</label><br><label class="mediumText" th:text="${daysList[5]}"></label></div>
+        <div class="day"><label class="mediumText">Dimanche</label><br><label class="mediumText" th:text="${daysList[6]}"></label></div>
+    </div>
+
+    <!-- For each 30min from 8h to 20h -->
+    <div class="min" th:each="min : ${minutesList}">
+        <div class="day">
+            <label th:text="${hoursList.get(min)}"></label>
+        </div>
+        <!-- Loop each days -->
+        <section th:each="day : ${daysList}">
+            <!-- Si seance -->
+            <div th:if="${listSeancesPlan.get(day + '' + min)}"  class="day colored">
+                <div class="smallText" th:text="${listSeancesPlan.get(day + '' + min).cours}"></div>
+                <div class="tinyText" th:text="${listSeancesPlan.get(day + '' + min).lieu}"></div>
+                <div class="tinyText" th:text="${listSeancesPlan.get(day + '' + min).enseignant}"></div>
+                <a class="tinyText" th:if="${ROLE_SECRETAIRE}" th:href="'/planning/'+${listSeancesPlan.get(day + '' + min).idCours}+'/'+${listSeancesPlan.get(day + '' + min).idSeance}">Supprimer</a>
+            </div>
+            <!-- Sinon -->
+            <div th:unless="${listSeancesPlan.get(day + '' + min)}"  class="day"></div>
+    </section>
+</div>
+
+<br>
+<div><a href="/">Retourner à l'accueil</a></div>
+</body>
+</html>

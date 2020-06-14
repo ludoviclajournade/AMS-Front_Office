@@ -30,6 +30,14 @@ public class WelcomeController {
     @GetMapping("/")
     public String getWelcome(Model model)
     {
+        setRoleModel(model);
+
+        return "welcome.html";
+    }
+
+    public static void setRoleModel(Model model) {
+        Gson mygson = new GsonBuilder().create();
+
         // Init roles boolean
         boolean ROLE_ANONYMOUS=false;
         boolean ROLE_DIRECTEUR=false;
@@ -39,10 +47,11 @@ public class WelcomeController {
 
         // Get ROLES of user
         Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        log.info(gson.toJson(authorities));
+        log.info(mygson.toJson(authorities));
 
         // Set roles
         Iterator<SimpleGrantedAuthority> iterator = authorities.iterator();
+
         // while loop
         while (iterator.hasNext()) {
             switch (iterator.next().toString())
@@ -71,7 +80,5 @@ public class WelcomeController {
         model.addAttribute("ROLE_SECRETAIRE",ROLE_SECRETAIRE);
         model.addAttribute("ROLE_USER",ROLE_USER);
         model.addAttribute("ROLE_ENSEIGNANT",ROLE_ENSEIGNANT);
-
-        return "welcome.html";
     }
 }

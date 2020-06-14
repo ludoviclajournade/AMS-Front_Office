@@ -9,7 +9,7 @@
     <form th:action="@{/creerCours}" method="post">
         <div><label> Nom : <input type="text" name="nom"/> </label></div>
         <div><label> Niveau cible : <input type="number" name="niveauCible"/> </label></div>
-        <div><label> Durée : <input type="number" name="duree"/> </label></div>
+        <div><label> Durée : <input type="number" step="30" name="duree"/> </label></div>
         <div>
             <select name="lieuId">
                 <div th:each="lieu : ${lieux}">

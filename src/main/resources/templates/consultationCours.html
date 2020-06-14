@@ -19,6 +19,7 @@
         <th>listeMembres</th>
         <th>listeSeances</th>
         <th>Plannifier</th>
+        <th th:if="${ROLE_SECRETAIRE}">Supprimer</th>
     </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
         <td th:text="${cours.listeMembres}">&nbsp;</td>
         <td th:text="${cours.listeSeances}">&nbsp;</td>
         <td><a th:href="'/plannifierCours/'+${cours.id}">Plannifier</a></td>
+        <td><a th:href="'/supprimerCours/'+${cours.id}">Supprimer</a></td>
     </tr>
     </tbody>
 </table>

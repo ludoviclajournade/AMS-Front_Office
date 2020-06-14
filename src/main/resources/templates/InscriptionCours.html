@@ -9,29 +9,34 @@
 <table>
     <thead>
     <tr>
-        <th>id</th>
         <th>Nom</th>
-        <th>niveauCible</th>
         <th>Lieu</th>
         <th>duree</th>
         <th>nbPlacesOccupees</th>
-        <th>listeMembres</th>
-        <th>listeSeances</th>
         <th>S'inscrire</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="cours : ${listeCours}">
-        <div th:if="${membre.niveau} == ${cours.niveauCible}">
-            <td th:text="${cours.id}">&nbsp;</td>
+        <!-- If no subscribe -->
+        <div th:unless="${mapSubscribe.get(cours.id)}">
+            <div th:if="${membre.niveau} == ${cours.niveauCible}">
+                <div th:if="${cours.nbPlacesOccupees} <= 15">
+                    <td th:text="${cours.nom}">&nbsp;</td>
+                    <td th:text="${cours.idLieu}">&nbsp;</td>
+                    <td th:text="${cours.duree}">&nbsp;</td>
+                    <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
+                    <td><a th:href="'/inscriptionCours/'+${cours.id}+'/'+${membre.id}">Inscription</a></td>
+                </div>
+            </div>
+        </div>
+        <!-- Else if subscribe  -->
+        <div th:if="${mapSubscribe.get(cours.id)}">
             <td th:text="${cours.nom}">&nbsp;</td>
-            <td th:text="${cours.niveauCible}">&nbsp;</td>
             <td th:text="${cours.idLieu}">&nbsp;</td>
             <td th:text="${cours.duree}">&nbsp;</td>
             <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
-            <td th:text="${cours.listeMembres}">&nbsp;</td>
-            <td th:text="${cours.listeSeances}">&nbsp;</td>
-            <td><a th:href="'/inscriptionCours/'+${cours.id}+'/'+${membre.id}">Inscription</a></td>
+            <td><a th:href="'/desinscriptionCours/'+${cours.id}+'/'+${membre.id}">Désnscription</a></td>
         </div>
     </tr>
     </tbody>
