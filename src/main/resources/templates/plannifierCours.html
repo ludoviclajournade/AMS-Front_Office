@@ -13,7 +13,7 @@
             <th>id</th>
             <th>Nom</th>
             <th>niveauCible</th>
-            <th>idLieu</th>
+            <th>lieu</th>
             <th>duree</th>
             <th>nbPlacesOccupees</th>
             <th>listeMembres</th>
@@ -26,7 +26,7 @@
             <td th:text="${cours.id}">&nbsp;</td>
             <td th:text="${cours.nom}">&nbsp;</td>
             <td th:text="${cours.niveauCible}">&nbsp;</td>
-            <td th:text="${cours.idLieu}">&nbsp;</td>
+            <td th:text="${cours.lieu.nom}">&nbsp;</td>
             <td th:text="${cours.duree}">&nbsp;</td>
             <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
             <td th:text="${cours.listeMembres}">&nbsp;</td>
@@ -51,7 +51,7 @@
                 </div>
             </select>
         </div>
-        <label>Nombre de répétition : </label><input type="number" name="repetition" min="1">
+        <label>Nombre de répétition : </label><input type="number" value="1" name="repetition" min="1">
         <div><input type="submit" value="Plannifier"/></div>
     </form>
 

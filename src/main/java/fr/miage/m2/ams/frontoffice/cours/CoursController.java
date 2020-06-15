@@ -69,8 +69,7 @@ public class CoursController {
             cours.setNom(nom);
             cours.setNiveauCible(niveauCible);
             cours.setDuree(duree);
-            cours.setIdLieu(lieuId);
-        restService.postJsonCours("http://localhost:10001/cours/create",cours);
+        restService.postJsonCours("http://localhost:10001/cours/create/"+lieuId,cours);
 
         String json = restService.getJson("http://localhost:10001/cours/getAllCours");
         log.info(json);
@@ -93,17 +92,6 @@ public class CoursController {
         Cours[] listCours = gson.fromJson(json, Cours[].class);
 
         log.info(listCours.toString());
-
-        // Petit triche pour les lieu, comme l'id est un string, on le remplace par le nom du lieu
-        // Ce n'est pas optimisé mais pour notre petite quantité de données ça passe
-        for (Cours cours : listCours) {
-            if (cours.getIdLieu() != null && cours.getIdLieu() != "" ) {
-                String jsonLieu = restService.getJson("http://localhost:10001/cours/getLieuById/"+cours.getIdLieu());
-                log.info(json);
-                Lieu lieu = gson.fromJson(jsonLieu, Lieu.class);
-                cours.setIdLieu(lieu.getNom());
-            }
-        }
 
         model.addAttribute("listeCours",listCours);
         setConsultationCours(model);
@@ -250,16 +238,6 @@ public class CoursController {
         Cours[] listCours = gson.fromJson(json, Cours[].class);
         log.info(listCours.toString());
 
-        // Petit triche pour les lieu, comme l'id est un string, on le remplace par le nom du lieu
-        // Ce n'est pas optimisé mais pour notre petite quantité de données ça passe
-        for (Cours cours : listCours) {
-            if (cours.getIdLieu() != null && cours.getIdLieu() != "" ) {
-                String jsonLieu = restService.getJson("http://localhost:10001/cours/getLieuById/"+cours.getIdLieu());
-                log.info(json);
-                Lieu lieu = gson.fromJson(jsonLieu, Lieu.class);
-                cours.setIdLieu(lieu.getNom());
-            }
-        }
 
         // Fill planning
         int[] minutesList = new int[25];
@@ -296,7 +274,7 @@ public class CoursController {
                             Membre membre = gson.fromJson(jsonMembre, Membre.class);
 
                             for (int duree=0;duree<cours.getDuree();duree+=30) {
-                                CoursPlanning coursPlanning = new CoursPlanning(cours.getNom(),cours.getIdLieu(),membre.getNom() + " " + membre.getPrenom(),cours.getId(),key);
+                                CoursPlanning coursPlanning = new CoursPlanning(cours.getNom(),cours.getLieu().getNom(),membre.getNom() + " " + membre.getPrenom(),cours.getId(),key);
                                 listSeancesPlan.put(day+""+(min+duree),coursPlanning);
                             }
                         }
@@ -331,17 +309,9 @@ public class CoursController {
 
         log.info(listCours.toString());
 
-        // Petit triche pour les lieu, comme l'id est un string, on le remplace par le nom du lieu
-        // Ce n'est pas optimisé mais pour notre petite quantité de données ça passe
+
         for (Cours cours : listCours) {
 
-            // Set Lieu
-            if (cours.getIdLieu() != null && cours.getIdLieu() != "" ) {
-                String jsonLieu = restService.getJson("http://localhost:10001/cours/getLieuById/"+cours.getIdLieu());
-                log.info(jsonLieu);
-                Lieu lieu = gson.fromJson(jsonLieu, Lieu.class);
-                cours.setIdLieu(lieu.getNom());
-            }
 
             // get username
             String username = SecurityContextHolder.getContext().getAuthentication().getName();

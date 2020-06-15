@@ -24,7 +24,7 @@
                 <th scope="col">id</th>
                 <th scope="col">Nom</th>
                 <th scope="col">niveauCible</th>
-                <th scope="col">idLieu</th>
+                <th scope="col">lieu</th>
                 <th scope="col">duree</th>
                 <th scope="col">nbPlacesOccupees</th>
                 <th scope="col">listeMembres</th>
@@ -39,7 +39,7 @@
                     <td th:text="${cours.id}"></td>
                     <td th:text="${cours.nom}"></td>
                     <td th:text="${cours.niveauCible}"></td>
-                    <td th:text="${cours.idLieu}"></td>
+                    <td th:text="${cours.lieu.nom}"></td>
                     <td th:text="${cours.duree}"></td>
                     <td th:text="${cours.nbPlacesOccupees}"></td>
                     <td th:text="${cours.listeMembres}"></td>
