@@ -1,7 +1,6 @@
 package fr.miage.m2.ams.frontoffice.statistiques;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import fr.miage.m2.ams.frontoffice.consumingrest.RestService;
 import fr.miage.m2.ams.frontoffice.cours.Cours;
 import fr.miage.m2.ams.frontoffice.membres.Membre;
@@ -14,6 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
@@ -25,8 +27,16 @@ public class StatistiquesController {
     public StatistiquesController()
     {
         GsonBuilder builder = new GsonBuilder();
+
         this.gson = new GsonBuilder()
-                .setDateFormat("dd-MM-yyyy").create();
+                .setDateFormat("dd-MM-yyyy")
+                .registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
+            @Override
+            public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+
+                return LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")); }
+
+        }).create();
         this.restService = new RestService();
     }
 
@@ -43,7 +53,7 @@ public class StatistiquesController {
         int nbCoursPositionned=0;
 
         // Get all members
-        String jsonMembres = restService.getJson("http://localhost:10000/");
+        String jsonMembres = restService.getJson("http://localhost:10000/getMembres");
         log.info(jsonMembres);
         Membre membres[] = gson.fromJson(jsonMembres, Membre[].class);
 
@@ -89,6 +99,7 @@ public class StatistiquesController {
         model.addAttribute("nbCoursPositionned",nbCoursPositionned);
         model.addAttribute("nbCotisationsOK",nbCotisationsOK);
         model.addAttribute("nbCotisationsWaiting",nbCotisationsWaiting);
+        model.addAttribute("nivEnseigantsMap",nivEnseigantsMap);
 
         return "statistiques";
     }

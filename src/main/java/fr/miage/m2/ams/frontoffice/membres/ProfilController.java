@@ -37,11 +37,9 @@ public class ProfilController {
         // get username
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("username:"+username);
-
         // get user information
         String json = restService.getJson("http://localhost:10000/email/"+username);
         log.info(json);
-
         Membre membre = gson.fromJson(json, Membre.class);
         log.info(membre.toString());
 
@@ -56,9 +54,14 @@ public class ProfilController {
     @PostMapping("/gestionProfil")
     public String postGestionProfil(@RequestParam String IBAN, Model model)
     {
-        String json = restService.getJson("http://localhost:10000/1");
+        // get username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("username:"+username);
+        // get user information
+        String json = restService.getJson("http://localhost:10000/email/"+username);
         log.info(json);
         Membre membre = gson.fromJson(json, Membre.class);
+        log.info(membre.toString());
 
         DateTimeFormatter formatter = DateTimeFormatter.BASIC_ISO_DATE;
         String formattedDate = formatter.format(LocalDate.now());
@@ -76,7 +79,7 @@ public class ProfilController {
     public String postModifierMembre(@ModelAttribute Membre membre)
     {
         log.info("postModifierMembre: " + gson.toJson(membre));
-        restService.postJsonMembre("http://localhost:10000/"+membre.getId(),membre);
+        restService.postJsonMembre("http://localhost:10000/UpadateMemebre/"+membre.getId(),membre);
 
         return "gestionProfil";
     }

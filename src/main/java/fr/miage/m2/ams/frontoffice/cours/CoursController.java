@@ -130,7 +130,7 @@ public class CoursController {
 
 
         // Get Enseignants
-        String jsonMembres = restService.getJson("http://localhost:10000/");
+        String jsonMembres = restService.getJson("http://localhost:10000/getMembres");
         Membre membres[] = gson.fromJson(jsonMembres, Membre[].class);
         ArrayList<Membre> enseignants = new ArrayList<>();
         for (Membre membre : membres) {
@@ -266,11 +266,13 @@ public class CoursController {
         HashMap<Integer,String> hoursList = new HashMap<Integer, String>();
         HashMap<String,CoursPlanning> listSeancesPlan = new HashMap<>();
         int i = 0;
-        for (int min=480;min<=1200;min+=30) {
+        for (int min=480;min<1200;min+=30) {
             minutesList[i]=min;
             // Hours
             String hoursValue = (min%60 == 0) ? (min/60)+"h" : (min/60)+"h30";
-            hoursList.put(min,hoursValue);
+            int nextMin=min+30;
+            String nextHoursValue = (nextMin%60 == 0) ? (nextMin/60)+"h" : (nextMin/60)+"h30";
+            hoursList.put(min,hoursValue+"-"+nextHoursValue);
 
             // Loop days and fill cours
             for (String day : daysList) {
@@ -290,11 +292,13 @@ public class CoursController {
                         // log.info("{min:"+min+", day:"+day.toUpperCase()+"}");
                         if (seanceMinutes == min && seanceDay.equals(day.toUpperCase())) {
                             // get user information
-                            String jsonMembre = restService.getJson("http://localhost:10000/"+seance.getIdEnseignant());
+                            String jsonMembre = restService.getJson("http://localhost:10000/GetOne/"+seance.getIdEnseignant());
                             Membre membre = gson.fromJson(jsonMembre, Membre.class);
 
-                            CoursPlanning coursPlanning = new CoursPlanning(cours.getNom(),cours.getIdLieu(),membre.getNom() + " " + membre.getPrenom(),cours.getId(),key);
-                            listSeancesPlan.put(day+""+min,coursPlanning);
+                            for (int duree=0;duree<cours.getDuree();duree+=30) {
+                                CoursPlanning coursPlanning = new CoursPlanning(cours.getNom(),cours.getIdLieu(),membre.getNom() + " " + membre.getPrenom(),cours.getId(),key);
+                                listSeancesPlan.put(day+""+(min+duree),coursPlanning);
+                            }
                         }
                     }
                 }

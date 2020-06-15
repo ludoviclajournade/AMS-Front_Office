@@ -78,22 +78,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         manager.createUser(users.username("directeur").password("password").roles("DIRECTEUR").build());
 
         // Get membres
-        String json = restService.getJson("http://localhost:10000/");
+        String json = restService.getJson("http://localhost:10000/getMembres");
         log.info(json);
-        Membre membres[] = gson.fromJson(json, Membre[].class);
+        if (json != null && json != "") {
+            Membre membres[] = gson.fromJson(json, Membre[].class);
 
-        // Add membres as users
-        for (Membre membre : membres)
-        {
-            if ( ! manager.userExists(membre.getMail())) {
-                // Set role
-                if (membre.getEnseignant() != null && membre.getEnseignant() == true) {
-                    manager.createUser(users.username(membre.getMail()).password(membre.getMdp()).roles("USER","ENSEIGNANT").build());
-                } else {
-                    manager.createUser(users.username(membre.getMail()).password(membre.getMdp()).roles("USER").build());
+            // Add membres as users
+            for (Membre membre : membres)
+            {
+                if ( ! manager.userExists(membre.getMail())) {
+                    // Set role
+                    if (membre.getEnseignant() != null && membre.getEnseignant() == true) {
+                        manager.createUser(users.username(membre.getMail()).password(membre.getMdp()).roles("USER","ENSEIGNANT").build());
+                    } else {
+                        manager.createUser(users.username(membre.getMail()).password(membre.getMdp()).roles("USER").build());
+                    }
                 }
             }
         }
+
 
 
         return manager;

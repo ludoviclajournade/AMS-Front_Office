@@ -9,6 +9,11 @@
     <ul>
         <li><label th:text="'Nombre de membres : ' + ${nbMembres}">&nbsp;</label></li>
         <li><label th:text="'Nombre d\'enseigants : ' + ${nbEnseignants}">&nbsp;</label></li>
+        <li>
+            <ul th:each="nivEnseigant : ${nivEnseigantsMap}">
+                <li th:text="'Nombre d\'enseignants pour le niveau ' + ${nivEnseigant}"></li>
+            </ul>
+        </li>
         <li><label th:text="'Nombre de cours positionnés : ' + ${nbCoursPositionned}+'/'+${nbCours}"></label></li>
         <li><label th:text="'Nombre de cotisations réglés : '+${nbCotisationsOK}"></label></li>
         <li><label th:text="'Nombre de cotisations en attente : '+${nbCotisationsWaiting}"></label></li>
