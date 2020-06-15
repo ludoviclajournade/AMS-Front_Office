@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         manager.createUser(users.username("directeur").password("password").roles("DIRECTEUR").build());
 
         // Get membres
-        String json = restService.getJson("http://localhost:10000/");
+        String json = restService.getJson("http://localhost:10000/getMembres");
         log.info(json);
         Membre membres[] = gson.fromJson(json, Membre[].class);
 

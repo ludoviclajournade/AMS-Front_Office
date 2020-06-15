@@ -41,7 +41,7 @@ public class MembreController {
         if (! exists) {
             membre.setEnseignant(false);
             log.info(gson.toJson(membre));
-            restService.postJsonMembre("http://localhost:10000/",membre);
+            restService.postJsonMembre("http://localhost:10000/PostMembre",membre);
             restService.getJson("http://localhost:8080/user/add/"+membre.getMail()+"/"+membre.getMdp()+"/false");
             return "login";
         } else {
@@ -53,7 +53,7 @@ public class MembreController {
     @GetMapping("/consulterMembres")
     public String getConsulterMembres(Model model)
     {
-        String json = restService.getJson("http://localhost:10000/");
+        String json = restService.getJson("http://localhost:10000/getMembres");
         log.info(json);
 
         Membre membres[] = gson.fromJson(json, Membre[].class);
@@ -73,7 +73,7 @@ public class MembreController {
                                      @RequestParam("statut") String statut,
                                      @RequestParam("enseignant") String enseignant) throws ParseException {
 
-        String json = restService.getJson("http://localhost:10000/");
+        String json = restService.getJson("http://localhost:10000/getMembres");
         log.info(json);
 
         Membre membres[] = gson.fromJson(json, Membre[].class);
@@ -109,7 +109,7 @@ public class MembreController {
             }
             membre.setStatut(statut);
             membre.setEnseignant(isEnseignant);
-            restService.postJsonMembre("http://localhost:10000/"+id,membre);
+            restService.postJsonMembre("http://localhost:10000/UpadateMemebre/"+id,membre);
             log.info("Membre " + id + " modifié");
         }
 
