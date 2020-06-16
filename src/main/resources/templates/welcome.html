@@ -1,66 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Bienvenue</title>
 </head>
 <body>
-    <h1>Bienvenue</h1>
+<div class="container">
+    <div class="row">
+        <h1>Bienvenue</h1>
+    </div>
 
+    <div class="row">
     <!-- Anonyme -->
-    <div th:if="${ROLE_ANONYMOUS}">
-        <ul>
-            <li><a href="/inscriptionMembre">S'inscrire (membre)</a></li>
-        </ul>
+        <div th:if="${ROLE_ANONYMOUS}">
+                <a class="btn btn-primary" href="/inscriptionMembre" role="button">S'inscrire (membre)</a>
+        </div>
     </div>
 
-    <!-- Secrétaire -->
-    <div th:if="${ROLE_SECRETAIRE}">
-        <h2>Secrétariat</h2>
-        <ul>
-            <li><a href="/consulterMembres">Consulter les membres</a></li>
-        </ul>
+
+    <div class="row">
+        <!-- Secrétaire -->
+        <div class="col">
+            <div th:if="${ROLE_SECRETAIRE}">
+                <h2>Secrétariat</h2>
+
+                    <a class="btn btn-primary" href="/consulterMembres" role="button">Consulter les membres</a>
+
+            </div>
+        </div>
+
+        <div class="col">
+        <!-- Enseignants -->
+            <div th:if="${ROLE_ENSEIGNANT}">
+                <h2>Enseignants</h2>
+
+                    <a class="btn btn-primary" href="/consultationCours" role="button">Consulter les cours</a>
+                    <a class="btn btn-primary" href="/creerCours" role="button">Créer un cours</a>
+
+            </div>
+        </div>
     </div>
 
-    <!-- Enseignants -->
-    <div th:if="${ROLE_ENSEIGNANT}">
-        <h2>Enseignants</h2>
-        <ul>
-            <li><a href="/consultationCours">Consulter les cours</a></li>
-            <li><a href="/creerCours">Créer un cours</a></li>
-        </ul>
+    <div class="row">
+        <!-- Membre -->
+        <div class="col">
+            <div th:if="${ROLE_USER}">
+                <h2>Membre</h2>
+                <a class="btn btn-primary" href="/gestionProfil" role="button">Gérer son profil</a>
+                <a class="btn btn-primary" href="/inscriptionCours" role="button">Inscription aux cours</a>
+            </div>
+        </div>
+        <div class="col">
+            <!-- Président -->
+            <div th:if="${ROLE_DIRECTEUR}">
+                <h2>Président</h2>
+                   <a class="btn btn-primary" href="/statistiques" role="button">Statistiques</a>
+            </div>
+        </div>
     </div>
-
-    <!-- Membre -->
-    <div th:if="${ROLE_USER}">
-        <h2>Membre</h2>
-        <ul>
-            <li><a href="/gestionProfil">Gérer son profil</a></li>
-            <li><a href="/inscriptionCours">Inscription aux cours</a></li>
-        </ul>
-    </div>
-
+    <br>
     <!-- EVERYBODY -->
-    <div>
-        <ul>
-            <li><a href="/planning/0">Planning</a></li>
-        </ul>
-    </div>
-
-    <!-- Président -->
-    <div th:if="${ROLE_DIRECTEUR}">
-        <h2>Président</h2>
-        <ul>
-            <li><a href="/statistiques">Statistiques</a></li>
-        </ul>
+    <div class="row">
+        <a class="btn btn-primary" href="/planning/0" role="button">Planning</a>
     </div>
 
     <br>
-    <div th:if="${ROLE_ANONYMOUS}">
-        <a href="/login">Se connecter</a>
+    <div class="row">
+        <div class="col">
+            <div th:if="${ROLE_ANONYMOUS}">
+                <a class="btn btn-primary" href="/login" role="button">Se connecter</a>
+            </div>
+        </div>
+        <div class="col">
+            <div th:unless="${ROLE_ANONYMOUS}">
+                <a class="btn btn-primary" href="/login?logout" role="button">Se déconnecter</a>
+            </div>
+        </div>
     </div>
-    <div th:unless="${ROLE_ANONYMOUS}">
-        <a href="/login?logout">Se déconnecter</a>
-    </div>
+</div>
 </body>
 </html>
