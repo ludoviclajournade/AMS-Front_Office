@@ -1,25 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Formulaire membre</title>
 </head>
 <body>
-<h1>Créer un membre</h1>
-<div th:if="${alreadyExist}">
-    Cet utilisateur existe déjà
+<div class="container">
+    <h1>Créer un membre</h1>
+    <div th:if="${alreadyExist}">
+        Cet utilisateur existe déjà
+    </div>
+    <form th:action="@{/inscriptionMembre}" method="post">
+        <div class="row">
+            <div class="col-4">
+                <label> Nom : </label>
+            </div>
+            <div class="col-9">
+                <input type="text" name="nom"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label> Prénom :  </label>
+            </div>
+            <div class="col-9">
+                <input type="text" name="prenom"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label> Adresse :</label>
+            </div>
+            <div class="col-9">
+                <input type="text" name="adresse"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label> Email :  </label>
+            </div>
+            <div class="col-9">
+                <input type="text" name="mail"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label> Mot de passe : </label>
+            </div>
+            <div class="col-9">
+                <input type="password" name="mdp"/>
+            </div>
+        </div>
+        <!-- div><label> Niveau : <input type="number" name="adresse"/> </label></div>
+        <div><label> Numéro de licence : <input type="text" name="numLicence"/> </label></div>
+        <div><label> Statut : <input type="text" name="statut"/> </label></div -->
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+                <input type="submit" class="btn btn-primary" value="Créer"/>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-9">
+
+        </div>
+        <div class="col-3">
+            <a href="/" class="btn btn-primary" >Retourner à l'accueil</a>
+        </div>
+    </div>
 </div>
-<form th:action="@{/inscriptionMembre}" method="post">
-    <div><label> Nom : <input type="text" name="nom"/> </label></div>
-    <div><label> Prénom : <input type="text" name="prenom"/> </label></div>
-    <div><label> Adresse : <input type="text" name="adresse"/> </label></div>
-    <div><label> Email : <input type="text" name="mail"/> </label></div>
-    <div><label> Mot de passe : <input type="text" name="mdp"/> </label></div>
-    <!-- div><label> Niveau : <input type="number" name="adresse"/> </label></div>
-    <div><label> Numéro de licence : <input type="text" name="numLicence"/> </label></div>
-    <div><label> Statut : <input type="text" name="statut"/> </label></div -->
-    <div><input type="submit" value="Créer"/></div>
-</form>
-<div><a href="/">Retourner à l'accueil</a></div>
 </body>
 </html>
