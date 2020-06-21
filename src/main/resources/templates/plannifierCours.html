@@ -1,62 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Plannifier un cours</title>
+    <title>Planifier un cours</title>
 </head>
 <body>
-    <h1>Plannifier un cours</h1>
-    <h2>Information sur le cours</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>Nom</th>
-            <th>niveauCible</th>
-            <th>lieu</th>
-            <th>duree</th>
-            <th>nbPlacesOccupees</th>
-            <th>listeMembres</th>
-            <th>listeSeances</th>
-            <th>Plannifier</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${cours.id}">&nbsp;</td>
-            <td th:text="${cours.nom}">&nbsp;</td>
-            <td th:text="${cours.niveauCible}">&nbsp;</td>
-            <td th:text="${cours.lieu.nom}">&nbsp;</td>
-            <td th:text="${cours.duree}">&nbsp;</td>
-            <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
-            <td th:text="${cours.listeMembres}">&nbsp;</td>
-            <td th:text="${cours.listeSeances}">&nbsp;</td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Planifier un cours</h1>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <h2>Information sur le cours</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">niveauCible</th>
+                <th scope="col">lieu</th>
+                <th scope="col">duree</th>
+                <th scope="col">nbPlacesOccupees</th>
+                <th scope="col">listeMembres</th>
+                <th scope="col">listeSeances</th>
+                <th scope="col">Planifier</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${cours.id}">&nbsp;</td>
+                <td th:text="${cours.nom}">&nbsp;</td>
+                <td th:text="${cours.niveauCible}">&nbsp;</td>
+                <td th:text="${cours.lieu.nom}">&nbsp;</td>
+                <td th:text="${cours.duree}">&nbsp;</td>
+                <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
+                <td th:text="${cours.listeMembres}">&nbsp;</td>
+                <td th:text="${cours.listeSeances}">&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <br>
-    <h2>Plannifier une scéance</h2>
+    <div class="row">
+        <div class="col">
+            <h2>Planifier une scéance</h2>
+        </div>
+    </div>
+    <br>
+
     <form th:action="@{/plannifierCours}" method="post">
         <input name="id" type="hidden" th:value="${cours.id}">
         <input name="duree" type="hidden" th:value="${cours.duree}">
-        <div>
-            <label>Début de la séance : </label>
-            <input type="datetime-local" name="debut-seance" step="1800" min="minDate">
+        <div class="row">
+            <div class="col-2">
+                <label>Début de la séance : </label>
+            </div>
+            <div class="col-2">
+                <input type="datetime-local" name="debut-seance" step="1800" min="minDate">
+            </div>
+            <div class="col-8">
+            </div>
         </div>
-        <div>
-            <select name="choixEnseignant">
-                <div th:each="enseignant : ${enseignants}">
-                    <option th:value="${enseignant.id}" th:text="${enseignant.nom}"></option>
-                </div>
-            </select>
+        <div class="row">
+            <div class="col-2">
+                <label>Enseignant : </label>
+            </div>
+            <div class="col-2">
+                <select name="choixEnseignant">
+                    <div th:each="enseignant : ${enseignants}">
+                        <option th:value="${enseignant.id}" th:text="${enseignant.nom}"></option>
+                    </div>
+                </select>
+            </div>
+            <div class="col-8">
+            </div>
+            <div class="col-10">
+            </div>
         </div>
-        <label>Nombre de répétition : </label><input type="number" value="1" name="repetition" min="1">
-        <div><input type="submit" value="Plannifier"/></div>
+        <div class="row">
+            <div class="col-2">
+                <label>Nombre de répétitions : </label>
+            </div>
+            <div class="col-2">
+                <input type="number" value="1" name="repetition" min="1">
+            </div>
+            <div class="col-8">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col"><input type="submit" class="form-control" value="Plannifier"/></div>
+        </div>
     </form>
 
     <br>
-    <div><a href="/consultationCours">Consulter les cours</a></div>
-    <div><a href="/">Retourner à l'accueil</a></div>
+    <div class="row"><a class="btn btn-primary" href="/consultationCours">Consulter les cours</a></div>
+    <br>
+    <div class="row"><a class="btn btn-primary" href="/">Retourner à l'accueil</a></div>
+</div>
 </body>
 </html>
