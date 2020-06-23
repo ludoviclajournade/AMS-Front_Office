@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Inscription aux cours</title>
 </head>
 <body>
-<h1>Liste des cours</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Nom</th>
-        <th>Lieu</th>
-        <th>duree</th>
-        <th>nbPlacesOccupees</th>
-        <th>S'inscrire</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="cours : ${listeCours}">
-        <!-- If no subscribe -->
-        <div th:unless="${mapSubscribe.get(cours.id)}">
-            <div th:if="${membre.niveau} == ${cours.niveauCible}">
-                <div th:if="${cours.nbPlacesOccupees} <= 15">
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Liste des cours</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col" >Lieu</th>
+                <th scope="col">duree</th>
+                <th scope="col">nbPlacesOccupees</th>
+                <th scope="col">S'inscrire</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr scope="row" th:each="cours : ${listeCours}">
+                <!-- If no subscribe -->
+                <div th:unless="${mapSubscribe.get(cours.id)}">
+                    <div th:if="${membre.niveau} == ${cours.niveauCible}">
+                        <div th:if="${cours.nbPlacesOccupees} <= 15">
+                            <td th:text="${cours.nom}">&nbsp;</td>
+                            <td th:text="${cours.idLieu}">&nbsp;</td>
+                            <td th:text="${cours.duree}">&nbsp;</td>
+                            <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
+                            <td><a class="btn btn-secondary" role="button" th:href="'/inscriptionCours/'+${cours.id}+'/'+${membre.id}">Inscription</a></td>
+                        </div>
+                    </div>
+                </div>
+                <!-- Else if subscribe  -->
+                <div th:if="${mapSubscribe.get(cours.id)}">
                     <td th:text="${cours.nom}">&nbsp;</td>
                     <td th:text="${cours.idLieu}">&nbsp;</td>
                     <td th:text="${cours.duree}">&nbsp;</td>
                     <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
-                    <td><a th:href="'/inscriptionCours/'+${cours.id}+'/'+${membre.id}">Inscription</a></td>
+                    <td><a class="btn btn-secondary" role="button" th:href="'/desinscriptionCours/'+${cours.id}+'/'+${membre.id}">Désinscription</a></td>
                 </div>
-            </div>
-        </div>
-        <!-- Else if subscribe  -->
-        <div th:if="${mapSubscribe.get(cours.id)}">
-            <td th:text="${cours.nom}">&nbsp;</td>
-            <td th:text="${cours.idLieu}">&nbsp;</td>
-            <td th:text="${cours.duree}">&nbsp;</td>
-            <td th:text="${cours.nbPlacesOccupees}">&nbsp;</td>
-            <td><a th:href="'/desinscriptionCours/'+${cours.id}+'/'+${membre.id}">Désnscription</a></td>
-        </div>
-    </tr>
-    </tbody>
-</table>
-
-<br>
-<div><a href="/">Retourner à l'accueil</a></div>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div><a class="btn btn-primary" role="button" href="/">Retourner à l'accueil</a></div>
+</div>
 </body>
 </html>

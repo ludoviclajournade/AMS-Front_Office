@@ -280,7 +280,7 @@ public class RestService {
         map.put("nom", cours.getNom());
         map.put("niveauCible", cours.getNiveauCible());
         map.put("duree", cours.getDuree());
-        map.put("idLieu",cours.getIdLieu());
+        map.put("lieu",cours.getLieu());
 
         // build the request
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
