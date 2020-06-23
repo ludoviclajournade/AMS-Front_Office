@@ -161,13 +161,14 @@
         <h1>Vous avez un paiement en retard</h1>
         <form th:action="@{/gestionProfil}" method="post">
             <div class="row">
-                <div class="col-4">
-                    <label> IBAN : <input type="text" class="btn btn-primary" name="IBAN"/> </label>
+                <div class="col-7">
+                    <label> IBAN : </label>
+                    <input type="text" class="form-control" name="IBAN"/>
                 </div>
                 <div class="col-2">
                     <label> Montant: 30 euros</label>
                 </div>
-                <div class="col-6">
+                <div class="col-3">
                     <input type="submit" class="btn btn-primary" th:value="Payer"/>
                 </div>
             </div>

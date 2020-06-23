@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Statistiques</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body>
+<div class="container">
     <h1>Statistiques</h1>
     <ul>
         <li><label th:text="'Nombre de membres : ' + ${nbMembres}">&nbsp;</label></li>
@@ -19,6 +21,9 @@
         <li><label th:text="'Nombre de cotisations en attente : '+${nbCotisationsWaiting}"></label></li>
     </ul>
     <br>
-    <div><a href="/">Retourner à l'accueil</a></div>
+    <div class="row">
+        <div><a href="/" class="btn btn-primary">Retourner à l'accueil</a></div>
+    </div>
+</div>
 </body>
 </html>
