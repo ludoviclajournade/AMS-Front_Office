@@ -5,6 +5,47 @@
     <meta charset="UTF-8">
     <title><h1>Créer un cours</h1></title>
 </head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <ul  class="navbar-nav mr-auto">
+        <!-- Anonyme -->
+        <li class="nav-item" th:if="${ROLE_ANONYMOUS}">
+            <a class="nav-link" href="/inscriptionMembre">S'inscrire (membre)</a>
+        </li>
+        <!-- Secrétaire -->
+        <li th:if="${ROLE_SECRETAIRE}" class="nav-item">
+            <a class="nav-link"  href="/consulterMembres">Consulter les membres</a>
+        </li>
+        <!-- Enseignants -->
+        <li th:if="${ROLE_ENSEIGNANT}"  class="nav-item">
+            <a class="nav-link"  href="/consultationCours">Consulter les cours</a>
+        </li>
+        <li th:if="${ROLE_ENSEIGNANT}"  class="nav-item">
+            <a class="nav-link"  href="/creerCours">Créer un cours</a>
+        </li>
+        <!-- Membre -->
+        <li  th:if="${ROLE_USER}"  class="nav-item">
+            <a class="nav-link" href="/gestionProfil">Gérer son profil</a>
+        </li>
+        <li  th:if="${ROLE_USER}"  class="nav-item">
+            <a class="nav-link" href="/inscriptionCours">Inscription aux cours</a>
+        </li>
+        <!-- EVERYBODY -->
+        <li  class="nav-item">
+            <a class="nav-link" href="/planning/0">Planning</a>
+        </li>
+        <!-- Président -->
+        <li th:if="${ROLE_DIRECTEUR}"  class="nav-item">
+            <a class="nav-link" href="/statistiques">Statistiques</a>
+        </li>
+        <li th:if="${ROLE_ANONYMOUS}"  class="nav-item">
+            <a class="nav-link" href="/login">Se connecter</a>
+        </li>
+        <li th:unless="${ROLE_ANONYMOUS}"  class="nav-item">
+            <a class="nav-link" href="/login?logout">Se déconnecter</a>
+        </li>
+    </ul>
+</nav>
+<br>
 <body>
     <div class="container">
         <h1>Créer un cours</h1>

@@ -1,9 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Planning</title>
 </head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <ul  class="navbar-nav mr-auto">
+        <!-- Anonyme -->
+        <li class="nav-item" th:if="${ROLE_ANONYMOUS}">
+            <a class="nav-link" href="/inscriptionMembre">S'inscrire (membre)</a>
+        </li>
+        <!-- Secrétaire -->
+        <li th:if="${ROLE_SECRETAIRE}" class="nav-item">
+            <a class="nav-link"  href="/consulterMembres">Consulter les membres</a>
+        </li>
+        <!-- Enseignants -->
+        <li th:if="${ROLE_ENSEIGNANT}"  class="nav-item">
+            <a class="nav-link"  href="/consultationCours">Consulter les cours</a>
+        </li>
+        <li th:if="${ROLE_ENSEIGNANT}"  class="nav-item">
+            <a class="nav-link"  href="/creerCours">Créer un cours</a>
+        </li>
+        <!-- Membre -->
+        <li  th:if="${ROLE_USER}"  class="nav-item">
+            <a class="nav-link" href="/gestionProfil">Gérer son profil</a>
+        </li>
+        <li  th:if="${ROLE_USER}"  class="nav-item">
+            <a class="nav-link" href="/inscriptionCours">Inscription aux cours</a>
+        </li>
+        <!-- EVERYBODY -->
+        <li  class="nav-item">
+            <a class="nav-link" href="/planning/0">Planning</a>
+        </li>
+        <!-- Président -->
+        <li th:if="${ROLE_DIRECTEUR}"  class="nav-item">
+            <a class="nav-link" href="/statistiques">Statistiques</a>
+        </li>
+        <li th:if="${ROLE_ANONYMOUS}"  class="nav-item">
+            <a class="nav-link" href="/login">Se connecter</a>
+        </li>
+        <li th:unless="${ROLE_ANONYMOUS}"  class="nav-item">
+            <a class="nav-link" href="/login?logout">Se déconnecter</a>
+        </li>
+    </ul>
+</nav>
+<br>
 
 <style>
     #agenda {
@@ -17,7 +59,7 @@
         min-width: 150px;
         max-width: 150px;
         width: 150px;
-        height: 30px;
+        height: 45px;
         border: 1px black;
         border-style: solid;
     }
@@ -37,6 +79,7 @@
 
 
 <body>
+<div class="container">
 <h1>Planning</h1>
 <div><a href="/creerCours">Créer un cours</a></div>
 <div>
@@ -48,13 +91,13 @@
     <!-- header -->
     <div class="min">
         <div class="day"></div> <!-- Colonne horaire -->
-        <div class="day"><label class="mediumText">Lundi</label><br><label class="mediumText" th:text="${daysList[0]}"></label></div>
-        <div class="day"><label class="mediumText">Mardi</label><br><label class="mediumText" th:text="${daysList[1]}"></label></div>
-        <div class="day"><label class="mediumText">Mercredi</label><br><label class="mediumText" th:text="${daysList[2]}"></label></div>
-        <div class="day"><label class="mediumText">Jeudi</label><br><label class="mediumText" th:text="${daysList[3]}"></label></div>
-        <div class="day"><label class="mediumText"> Vendredi</label><br><label class="mediumText" th:text="${daysList[4]}"></label></div>
-        <div class="day"><label class="mediumText">Samedi</label><br><label class="mediumText" th:text="${daysList[5]}"></label></div>
-        <div class="day"><label class="mediumText">Dimanche</label><br><label class="mediumText" th:text="${daysList[6]}"></label></div>
+        <div class="day"><div class="mediumText">Lundi</div><div class="mediumText" th:text="${daysList[0]}"></div></div>
+    <div class="day"><div class="mediumText">Mardi</div><div class="mediumText" th:text="${daysList[1]}"></div></div>
+    <div class="day"><div class="mediumText">Mercredi</div><div class="mediumText" th:text="${daysList[2]}"></div></div>
+<div class="day"><div class="mediumText">Jeudi</div><div class="mediumText" th:text="${daysList[3]}"></div></div>
+<div class="day"><div class="mediumText"> Vendredi</div><div class="mediumText" th:text="${daysList[4]}"></div></div>
+<div class="day"><div class="mediumText">Samedi</div><div class="mediumText" th:text="${daysList[5]}"></div></div>
+<div class="day"><div class="mediumText">Dimanche</div><div class="mediumText" th:text="${daysList[6]}"></div></div>
     </div>
 
     <!-- For each 30min from 8h to 20h -->
@@ -69,7 +112,7 @@
                 <div class="smallText" th:text="${listSeancesPlan.get(day + '' + min).cours}"></div>
                 <div class="tinyText" th:text="${listSeancesPlan.get(day + '' + min).lieu}"></div>
                 <div class="tinyText" th:text="${listSeancesPlan.get(day + '' + min).enseignant}"></div>
-                <a class="tinyText" th:if="${ROLE_SECRETAIRE}" th:href="'/planning/'+${listSeancesPlan.get(day + '' + min).idCours}+'/'+${listSeancesPlan.get(day + '' + min).idSeance}">Supprimer</a>
+                <div th:if="${ROLE_SECRETAIRE}" class="tinyText"><a  th:href="'/planning/'+${listSeancesPlan.get(day + '' + min).idCours}+'/'+${listSeancesPlan.get(day + '' + min).idSeance}">Supprimer</a></div>
             </div>
             <!-- Sinon -->
             <div th:unless="${listSeancesPlan.get(day + '' + min)}"  class="day"></div>
@@ -78,5 +121,6 @@
 
 <br>
 <div><a href="/">Retourner à l'accueil</a></div>
+</div>
 </body>
 </html>

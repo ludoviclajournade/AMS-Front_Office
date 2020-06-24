@@ -68,7 +68,7 @@ public class ProfilController {
 
         log.info("IBAN:"+IBAN+", formattedDate:"+formattedDate);
 
-        restService.postJsonMembre("http://localhost:10000/payement/"+formattedDate+"/"+IBAN+"/"+membre.getId()); // TODO: tester le post
+        restService.postJsonMembre("http://localhost:10000/payement/"+formattedDate+"/"+IBAN+"/"+membre.getId());
 
         membre.setPayement(formattedDate);
         model.addAttribute("membre",membre);
@@ -76,10 +76,13 @@ public class ProfilController {
     }
 
     @PostMapping("/modifierMembre")
-    public String postModifierMembre(@ModelAttribute Membre membre)
+    public String postModifierMembre(Model model, @ModelAttribute Membre membre)
     {
         log.info("postModifierMembre: " + gson.toJson(membre));
         restService.postJsonMembre("http://localhost:10000/UpadateMemebre/"+membre.getId(),membre);
+
+        boolean payementEnvoye= (membre.getPayement() == null || membre.getPayement() == "") ? true : false;
+        model.addAttribute("payementEnvoye",payementEnvoye);
 
         return "gestionProfil";
     }

@@ -5,6 +5,47 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <title>Spring Security Example </title>
 </head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <ul  class="navbar-nav mr-auto">
+        <!-- Anonyme -->
+        <li class="nav-item" th:if="${ROLE_ANONYMOUS}">
+            <a class="nav-link" href="/inscriptionMembre">S'inscrire (membre)</a>
+        </li>
+        <!-- Secrétaire -->
+        <li th:if="${ROLE_SECRETAIRE}" class="nav-item">
+            <a class="nav-link"  href="/consulterMembres">Consulter les membres</a>
+        </li>
+        <!-- Enseignants -->
+        <li th:if="${ROLE_ENSEIGNANT}"  class="nav-item">
+            <a class="nav-link"  href="/consultationCours">Consulter les cours</a>
+        </li>
+        <li th:if="${ROLE_ENSEIGNANT}"  class="nav-item">
+            <a class="nav-link"  href="/creerCours">Créer un cours</a>
+        </li>
+        <!-- Membre -->
+        <li  th:if="${ROLE_USER}"  class="nav-item">
+            <a class="nav-link" href="/gestionProfil">Gérer son profil</a>
+        </li>
+        <li  th:if="${ROLE_USER}"  class="nav-item">
+            <a class="nav-link" href="/inscriptionCours">Inscription aux cours</a>
+        </li>
+        <!-- EVERYBODY -->
+        <li  class="nav-item">
+            <a class="nav-link" href="/planning/0">Planning</a>
+        </li>
+        <!-- Président -->
+        <li th:if="${ROLE_DIRECTEUR}"  class="nav-item">
+            <a class="nav-link" href="/statistiques">Statistiques</a>
+        </li>
+        <li th:if="${ROLE_ANONYMOUS}"  class="nav-item">
+            <a class="nav-link" href="/login">Se connecter</a>
+        </li>
+        <li th:unless="${ROLE_ANONYMOUS}"  class="nav-item">
+            <a class="nav-link" href="/login?logout">Se déconnecter</a>
+        </li>
+    </ul>
+</nav>
+<br>
 <body>
 <div class="container">
     <div th:if="${param.error}">

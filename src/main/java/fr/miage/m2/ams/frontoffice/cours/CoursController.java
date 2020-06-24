@@ -175,7 +175,7 @@ public class CoursController {
     public String postDesinscriptionCours(Model model,@PathVariable("idCours") String idCours,@PathVariable("idMembre") Long idMembre)
     {
         log.info("url: http://localhost:10001/cours/desinscrireCours/"+idCours+"/"+idMembre);
-        String json = restService.getJson("http://localhost:10001/cours/desinscrireCours/"+idCours+"/"+idMembre);
+        restService.postJsonCours("http://localhost:10001/cours/desinscrireCours/"+idCours+"/"+idMembre,new Cours());
 
         setConsultationCours(model);
 
@@ -186,7 +186,7 @@ public class CoursController {
     public String postInscriptionCours(Model model,@PathVariable("idCours") String idCours,@PathVariable("idMembre") Long idMembre)
     {
         log.info("url: http://localhost:10001/cours/inscrireCours/"+idCours+"/"+idMembre);
-        String json = restService.getJson("http://localhost:10001/cours/inscrireCours/"+idCours+"/"+idMembre);
+        restService.postJsonCours("http://localhost:10001/cours/inscrireCours/"+idCours+"/"+idMembre, new Cours());
 
         setConsultationCours(model);
 
@@ -204,7 +204,7 @@ public class CoursController {
     @GetMapping("/planning/{idCours}/{idSeance}")
     public String getPlanningDeleteSeance(Model model, @PathVariable("idCours") String idCours, @PathVariable("idSeance") int idSeance)
     {
-        String json = restService.getJson("http://localhost:10001/cours/deleteSeance/"+idCours+"/"+idSeance);
+        restService.postJsonCours("http://localhost:10001/cours/deleteSeance/"+idCours+"/"+idSeance, new Cours());
         setPlanningModel(model,0);
 
         return "planning";
