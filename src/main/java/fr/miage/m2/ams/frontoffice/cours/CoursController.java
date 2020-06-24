@@ -130,11 +130,13 @@ public class CoursController {
         // Date min start
         String minDate = LocalDateTime.now().plusDays(7).toString();
 
+        boolean haveTeacher = (enseignants.isEmpty()) ? true : false;
 
         // add in model
         model.addAttribute("cours",cours);
         model.addAttribute("enseignants",enseignants);
         model.addAttribute("minDate",minDate);
+        model.addAttribute("haveTeacher",haveTeacher);
 
         return "plannifierCours";
     }

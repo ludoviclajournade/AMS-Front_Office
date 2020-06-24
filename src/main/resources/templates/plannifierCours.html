@@ -137,7 +137,8 @@
         </div>
         <br>
         <div class="row">
-            <div class="col"><input type="submit" class="form-control" value="Plannifier"/></div>
+            <div th:if="${haveTeacher}" class="col"><input type="submit" class="form-control btn btn-danger" value="Merci de créer un enseignant pour pouvoir plannifier un cours" disabled/></div>
+            <div th:unless="${haveTeacher}" class="col"><input type="submit" class="form-control" value="Plannifier"/></div>
         </div>
     </form>
 
